@@ -8,11 +8,11 @@ sidebar_position: 4
 This document outlines two core hook methods for controlling the character's entrance cutscene into the throne room. These methods must work in tandem through both static and dynamic approaches to achieve the playback and logical control of character animations.
 
 I shall use the cutscene depicting Wang Shou meeting the king as an example.
-First, we must examine the ==dc.cin== class, which governs all cutscenes.
+First, we must examine the `dc.cin` class, which governs all cutscenes.
 Should we wish to rewrite the entire method, we must simultaneously hook two or more methods to collaboratively execute the cutscene.
 ```csharp
-Hook_EnterThroneRoomAsKing.update += Hook_EnterThroneRoomAsKing_update;//Dynamic Class
-Hook__EnterThroneRoomAsKing.__constructor__ += Hook__EnterThroneRoomAsKing__constructor__;//Static class
+Hook_EnterThroneRoomAsKing.update += Hook_EnterThroneRoomAsKing_update; //Dynamic Class
+Hook__EnterThroneRoomAsKing.__constructor__ += Hook__EnterThroneRoomAsKing__constructor__; //Static class
 ```
 
 
@@ -70,7 +70,7 @@ private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing_orig_u
 - **​ cinematic Control: Create a new transition animation controller
 
 :::warning
-> **A new Cinematic instance must be created** > If a new `Cinematic` object is not explicitly created, the game engine will execute the default original cutscene logic.。
+**A new Cinematic instance must be created** > If a new `Cinematic` object is not explicitly created, the game engine will execute the default original cutscene logic.。
 :::
 ---
 # After running, it looks like this.

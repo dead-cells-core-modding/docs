@@ -8,11 +8,12 @@ sidebar_position: 4
 本文档介绍了用于控制角色进入王座房间过场动画的两个核心 Hook 方法。要通过静态和动态两种方式协同工作，实现角色动画的播放与逻辑控制。
 
 我将用王守见到国王的过场动画做示例。
-首先我们需要去查看-==dc.cine==类，它控制着所有过场动画。
+首先我们需要去查看 `dc.cine` 类，它控制着所有过场动画。
 如果我们要重写整个方法就要同时挂钩两个或多个方法，协同完成过场动画。
+
 ```csharp
-Hook_EnterThroneRoomAsKing.update += Hook_EnterThroneRoomAsKing_update;//动态类
-Hook__EnterThroneRoomAsKing.__constructor__ += Hook__EnterThroneRoomAsKing__constructor__;//静态类
+Hook_EnterThroneRoomAsKing.update += Hook_EnterThroneRoomAsKing_update; //动态类
+Hook__EnterThroneRoomAsKing.__constructor__ += Hook__EnterThroneRoomAsKing__constructor__; //静态类
 ```
 
 
@@ -45,7 +46,7 @@ private void Hook_EnterThroneRoomAsKing_constructor_(Hook_EnterThroneRoomAsKing_
 
 - **距离判断**：检查 Boss 与英雄角色的水平距离是否大于 3
     
-- **动画切换**：如果 Boss 当前未处于 `runShield`状态，则播放持盾奔跑动画
+- **动画切换**：如果 Boss 当前未处于 `runShield` 状态，则播放持盾奔跑动画
     
 - **循环播放**：设置动画循环 999 次，确保动画持续进行
     
@@ -67,10 +68,10 @@ private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing_orig_u
 
 **关键逻辑**：
 
-- **​ cinematic 控制**：创建新的过场动画控制器
+- **​ Cinematic 控制**：创建新的过场动画控制器
 
 :::warning
-> **必须创建新的 Cinematic 实例** > 如果不显式创建新的 `Cinematic` 对象，游戏引擎将执行默认的原版过场动画逻辑。
+ **必须创建新的 Cinematic 实例** > 如果不显式创建新的 `Cinematic` 对象，游戏引擎将执行默认的原版过场动画逻辑。
 :::
 ---
 # 运行后就是这样的
