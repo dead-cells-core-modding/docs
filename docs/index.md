@@ -24,6 +24,10 @@ DCCM remains under active development. This means:
 
 :::
 
+## Translation Documentation
+
+Currently, DCCM documentation is not available in all languages. If you find that your desired language is not provided, you can refer to the [Docusaurus Documentation](https://docusaurus.io/docs/i18n/git) to perform translation work.
+
 ## Reporting Issues
 
 :::warning
