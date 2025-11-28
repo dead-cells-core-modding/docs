@@ -1,18 +1,18 @@
 {
   "version.label": {
-    "message": "Next",
+    "message": "下一个",
     "description": "The label for version current"
   },
-  "sidebar.tutorialSidebar.category.教程": {
+  "sidebar.tutorialSidebar.category.Tutorials": {
     "message": "教程",
-    "description": "The label for category 教程 in sidebar tutorialSidebar"
+    "description": "The label for category Tutorials in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.Mods 开发": {
+  "sidebar.tutorialSidebar.category.Mods Development": {
     "message": "Mods 开发",
-    "description": "The label for category Mods 开发 in sidebar tutorialSidebar"
+    "description": "The label for category Mods Development in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.开始制作 Mod": {
+  "sidebar.tutorialSidebar.category.Mods Creation Tutorial": {
     "message": "开始制作 Mod",
-    "description": "The label for category 开始制作 Mod in sidebar tutorialSidebar"
+    "description": "The label for category Mods Creation Tutorial in sidebar tutorialSidebar"
   }
 }
