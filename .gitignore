@@ -18,5 +18,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 
 /.obsidian
+=======
+/.obsidian
+/.vscode
+>>>>>>> 4cccfee56709f4b63f9c79e527f6a54dd809f5ec
