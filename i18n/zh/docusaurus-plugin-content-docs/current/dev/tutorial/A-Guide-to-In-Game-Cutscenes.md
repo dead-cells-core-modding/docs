@@ -1,29 +1,77 @@
 ---
 sidebar_position: 4
 ---
-# 过场动画 Hook 逻辑介绍
+# 修改游戏中的过场动画
+本教程将指导你重写游戏内的过场动画，了解死亡细胞的过场动画逻辑。
+:::tip
+我希望您有：
+- C# 编程基础
+- Dead Cells 基础 Mod 制作 ([教程](https://www.bilibili.com/opus/681293864647000128))
+:::
 
-## 概述
+---
+# 第一步：找到您想修改的过场动画
+cine里的就是游戏内的所有过场动画
+![](./img/cm/cm1.png)
 
-本文档介绍了用于控制角色进入王座房间过场动画的两个核心 Hook 方法。要通过静态和动态两种方式协同工作，实现角色动画的播放与逻辑控制。
+---
+# 第二步：分析代码
+### 以王守见到国王为例
+先查看函数的主类
 
-我将用王守见到国王的过场动画做示例。
-首先我们需要去查看 `dc.cine` 类，它控制着所有过场动画。
-如果我们要重写整个方法就要同时挂钩两个或多个方法，协同完成过场动画。
+![](./img/cm/cm0.png)
 
-```csharp
-Hook_EnterThroneRoomAsKing.update += Hook_EnterThroneRoomAsKing_update; //动态类
-Hook__EnterThroneRoomAsKing.__constructor__ += Hook__EnterThroneRoomAsKing__constructor__; //静态类
-```
+我们发现，可以在update修改boss的移动
+![](./img/cm/cm2.png)
+
+## 查看静态类
+这里才是播放动画的类，不要被这么多方法吓到
+![](./img/cm/cm3.png)
+
+我们只需要重点关注这个静态方法，它是动画播放的核心：
+![](./img/cm/cm4.png)
 
 
 ---
+# 第三步：编写代码
+## 挂钩hook
+在 `Initialize()` 方法中添加以下两个 Hook：
+第一个为主类的update方法
+```csharp
+Hook_EnterThroneRoomAsKing.update += Hook_EnterThroneRoomAsKing_update;//动态类
+```
+第二个为静态类的静态方法
+```csharp
+Hook__EnterThroneRoomAsKing.__constructor__ += Hook__EnterThroneRoomAsKing__constructor__;//静态类
+```
 
-## 代码结构
+## 覆盖原版动画
+`self.cm = new Cinematic((int)self.tmod);`就能将原版静态函数的动画逻辑进行覆盖
+```csharp
+    private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing.orig_update orig, EnterThroneRoomAsKing self)
 
-### 1. 构造函数 Hook (`Hook_EnterThroneRoomAsKing_constructor_`)
+    {
+        orig(self); //调用原版逻辑
 
-**功能**：在过场动画对象初始化时执行，主要负责**静态播放**角色动画。
+        self.cm = new Cinematic((int)self.tmod);//覆盖原版动画逻辑
+    }
+    private void Hook__EnterThroneRoomAsKing__constructor__(Hook__EnterThroneRoomAsKing.orig___constructor__ orig, EnterThroneRoomAsKing _hero, Hero game)
+
+    {
+        orig(_hero, game);//调用原版逻辑，但不会调用原版动画
+        
+    }
+```
+这样就完成了对原版动画的删除
+接下来你就可以在
+1.静态类播放相应的动画
+2.在动态类修改boss和hero的行为
+
+---
+
+# 简单示例
+
+### 王守见到国王直接逃走
 
 ```csharp
 private void Hook_EnterThroneRoomAsKing_constructor_(Hook_EnterThroneRoomAsKing_orig_constructor_ orig, EnterThroneRoomAsKing _hero, Hero game)
@@ -40,22 +88,7 @@ private void Hook_EnterThroneRoomAsKing_constructor_(Hook_EnterThroneRoomAsKing_
     }
     // 示例：在静态播放动画。让王守跑起来
 }
-```
 
-**关键逻辑**：
-
-- **距离判断**：检查 Boss 与英雄角色的水平距离是否大于 3
-    
-- **动画切换**：如果 Boss 当前未处于 `runShield` 状态，则播放持盾奔跑动画
-    
-- **循环播放**：设置动画循环 999 次，确保动画持续进行
-    
-
-### 2. 更新函数 Hook (`Hook_EnterThroneRoomAsKing_update`)
-
-**功能**：在每帧更新时执行，主要负责**动态修改**角色属性。
-
-```csharp
 private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing_orig_update orig, EnterThroneRoomAsKing self)
 {
     orig(self); // 调用原始更新函数
@@ -66,20 +99,20 @@ private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing_orig_u
 }
 ```
 
-**关键逻辑**：
 
-- **​ Cinematic 控制**：创建新的过场动画控制器
 
 :::warning
  **必须创建新的 Cinematic 实例** > 如果不显式创建新的 `Cinematic` 对象，游戏引擎将执行默认的原版过场动画逻辑。
 :::
----
 # 运行后就是这样的
 
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115627398269311&bvid=BV1iCSEBzEQn&cid=34337590920&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
----
 
+## 最终代码
+
+---
+![](./img/cm/cm.png)
 
 ## 动静态方法协作机制
 
@@ -101,26 +134,7 @@ private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing_orig_u
 - **示例**：`boss.dx = 0.5 * boss.dir`- 控制移动速度`以0.5的速度，向boss朝向的位置移动`这里会自动播放行走的动画
 
 ### 协作关系
-![项目结构图](./img/Pasted.png)
-
-
-1. **静态方法奠定基础**：在初始化时设置好要播放的动画
-    
-2. **动态方法实时调整**：在游戏运行过程中不断更新物体状态
-    
-3. **两者协同工作**：静态动画提供视觉表现，动态逻辑提供行为控制
-    
-
----
-
-### 动画控制技巧
-
-- **状态检查**：在播放动画前检查当前状态，避免重复播放
-    
-- **距离触发**：根据角色距离条件性地触发动画
-    
-- **帧同步**：确保动画播放与位置更新同步进行
-    
+![项目结构图](./img/Pasted-zh.png)
 
 ---
 
