@@ -114,7 +114,7 @@ private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing_orig_u
 ---
 ![](./img/cm/cm.png)
 
-## 动静态方法协作机制
+## 动静态方法协作机制 
 
 ### 静态方法 (Static)
 
