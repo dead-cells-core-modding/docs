@@ -14,5 +14,9 @@
   "sidebar.tutorialSidebar.category.Mods Creation Tutorial": {
     "message": "开始制作 Mod",
     "description": "The label for category Mods Creation Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.add new levels": {
+    "message": "创建新关卡",
+    "description": "The label for category Creating New Levels in sidebar tutorialSidebar"
   }
 }
