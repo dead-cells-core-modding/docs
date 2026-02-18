@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>FirstWeaponMod</RootNamespace>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--将res.pak文件复制到bin\Debug\net9.0目录-->
+    <!--将res.pak文件复制到bin\Debug\net10.0目录-->
     <None Update="res.pak">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

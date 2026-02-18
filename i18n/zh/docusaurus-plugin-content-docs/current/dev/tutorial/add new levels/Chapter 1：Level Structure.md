@@ -111,17 +111,17 @@ public class Out_Clock
 其他选项大家可以自行尝试.
 :::
 
-### 4.配置 `csproj` 
+### 4.配置 `csproj`
+
 就是你的项目文件
 
-![](./level/strct-2.png)
-
+![struct](./level/strct-2.png)
 
 ```bash
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ModType>mod</ModType>

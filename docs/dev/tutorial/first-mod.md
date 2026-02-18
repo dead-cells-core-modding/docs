@@ -104,7 +104,7 @@ Run the build command in the project directory:
 dotnet build
 ```
 
-After successful build, the mod files will be generated in the `bin\Debug\net9.0\output` directory (`$(OutputPath)\output`).
+After successful build, the mod files will be generated in the `bin\Debug\net10.0\output` directory (`$(OutputPath)\output`).
 
 ## Test the Mod
 

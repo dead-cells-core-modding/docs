@@ -35,7 +35,7 @@ sidebar_position: 3
 
 ```xml
 <ItemGroup>
-    <!--将res.pak文件复制到bin\Debug\net9.0目录-->
+    <!--将res.pak文件复制到bin\Debug\net10.0目录-->
     <None Update="res.pak">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

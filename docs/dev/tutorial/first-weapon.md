@@ -35,7 +35,7 @@ A ready-made [res.pak](https://github.com/dead-cells-core-modding/docs-zh/blob/m
 
 ```xml
 <ItemGroup>
-    <!-- Copy the res.pak file to the bin\Debug\net9.0 directory -->
+    <!-- Copy the res.pak file to the bin\Debug\net10.0 directory -->
     <None Update="res.pak">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

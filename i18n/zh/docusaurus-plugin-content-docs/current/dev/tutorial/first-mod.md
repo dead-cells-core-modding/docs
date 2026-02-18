@@ -33,7 +33,7 @@ sidebar_position: 2
 - 创建一个新的库项目：
 
 ```bash
-dotnet new classlib -n FirstDeadCellsMod -f net9.0
+dotnet new classlib -n FirstDeadCellsMod -f net10.0
 ```
 
 - 进入项目目录：
@@ -104,7 +104,7 @@ namespace FirstDeadCellsMod
 dotnet build
 ```
 
-构建成功后，会在`bin\Debug\net9.0\output`（`$(OutputPath)\output`）目录下生成 Mod 文件
+构建成功后，会在`bin\Debug\net10.0\output`（`$(OutputPath)\output`）目录下生成 Mod 文件
 
 ## 测试 Mod
 
