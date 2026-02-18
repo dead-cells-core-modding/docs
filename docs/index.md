@@ -8,9 +8,11 @@ sidebar_position: 1
 
 Dead Cells Core Modding (DCCM) is an unofficial mod framework designed to enable deeper modifications to the game.
 
-:::warning
+:::tip
 
-DCCM currently supports only the Windows version on the Steam platform.
+DCCM currently only supports the **Windows** version on the **Steam** platform.
+
+- You can use **Proton** to run DCCM on **Linux**. ([Installation Guide](./tutorial/install-workshop.md))
 
 :::
 

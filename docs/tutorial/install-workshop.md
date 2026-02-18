@@ -6,6 +6,12 @@ sidebar_position: 2
 
 This tutorial will guide you through installing the Dead Cells Core Modding (DCCM) core.
 
+:::tip
+
+For **Linux**, enabling **Proton** for **Dead Cells** is required. Please refer to [this link](https://steamcommunity.com/games/221410/announcements/detail/1696055855739350561).
+
+:::
+
 ## Installation
 
 ### Get SteamStartShell
@@ -33,3 +39,11 @@ If this process takes too long, verify your network connection and try restartin
 :::
 
 The game will launch once the download completes.
+
+### Installing Mods
+
+Unlike [manual installation](./install-core.md), **installing the DCCM core via Steam Workshop** grants access to mods published on **Steam Workshop**.
+
+Details on subscribing to **mods** in **Steam Workshop** are beyond the scope of this guide.
+
+- Most **DCCM Mods** in the **Steam Workshop** have names starting with **[DCCM]**.

@@ -2,9 +2,15 @@
 sidebar_position: 1
 ---
 
-# 安装 DCCM 核心
+# 手动安装 DCCM 核心
 
 本教程将指导您完成 Dead Cells Core Modding (DCCM) 核心的安装过程
+
+:::tip
+
+对于 **Steam** 用户来说，[从创意工坊安装](./install-workshop.md)是最好的选择。
+
+:::
 
 ## 先决条件
 

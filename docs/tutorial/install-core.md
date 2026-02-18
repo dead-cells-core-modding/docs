@@ -2,9 +2,15 @@
 sidebar_position: 1
 ---
 
-# Installing DCCM Core
+# Manually Installing the DCCM
 
 This tutorial will guide you through installing the Dead Cells Core Modding (DCCM) core.
+
+:::tip
+
+For **Steam** users, [installing from the Workshop](./install-workshop.md) is the best option.
+
+:::
 
 ## Prerequisites
 
