@@ -26,6 +26,12 @@ DCCM 依然处于开发状态。这意味着：
 
 :::
 
+## 支持这个项目
+
+[爱发电](https://afdian.com/a/FrostyTwilight)
+
+这个项目是免费开源的。您的支持将直接用于维护项目，帮助我们持续改进。感谢！
+
 ## 翻译文档
 
 目前，DCCM 文档并没有为所有语言提供。如果你发现你所需的语言没有被提供，你可以参照 [Docusaurus 国际化文档](https://docusaurus.io/docs/i18n/git) 进行翻译工作。
