@@ -10,9 +10,8 @@ Dead Cells Core Modding（简称 DCCM ）是一个非官方的Mod框架，旨在
 
 :::tip
 
-DCCM 目前仅支持 **Steam** 平台的 **Windows** 版本。
-
-- 你可以使用 **Proton** 在 **Linux** 上运行 DCCM 。([安装方式](./tutorial/install-workshop.md))
+对于 **Steam** 平台用户，可以 [通过创意工坊安装 DCCM](./tutorial/install-workshop.md) 。
+对于  **GOG**  平台用户，可以 [通过手动安装 DCCM](./tutorialinstall-core.md)。
 
 :::
 
@@ -37,10 +36,6 @@ DCCM 依然处于开发状态。这意味着：
 目前，DCCM 文档并没有为所有语言提供。如果你发现你所需的语言没有被提供，你可以参照 [Docusaurus 国际化文档](https://docusaurus.io/docs/i18n/git) 进行翻译工作。
 
 ## 提交问题
-
-:::warning
-由于开发者是一只高三牲，维护时间有限，Bug 修复可能需要较长时间，请谅解。
-:::
 
 :::tip
 提交前，请确认该问题未被重复报告。
