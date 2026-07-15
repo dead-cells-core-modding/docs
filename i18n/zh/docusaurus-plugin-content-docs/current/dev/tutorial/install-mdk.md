@@ -6,9 +6,15 @@ sidebar_position: 1
 
 **MDK (Mod Development Kit)** 是 DCCM 提供的 Mod 开发工具包。本教程将指导你完成 MDK 的安装和基础配置
 
+:::tip
+
+加入 [Discord 服务器](https://discord.gg/Z7zzVafaP3) 获取更多帮助。
+
+:::
+
 ## 先决条件
 
-- **.NET 10 SDK** ([下载地址](https://dotnet.microsoft.com/zh-cn/download/dotnet/9.0))
+- **.NET 10 SDK** ([下载地址](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0))
   - （可选） Visual Studio 2022
 - [DCCM 核心文件](/docs/tutorial/install-core)
 

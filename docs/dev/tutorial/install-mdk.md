@@ -6,9 +6,15 @@ sidebar_position: 1
 
 **MDK (Mod Development Kit)** is the mod development toolkit provided by DCCM. This tutorial will guide you through installing and performing basic configuration of MDK.
 
+:::tip
+
+Join the [Discord server](https://discord.gg/Z7zzVafaP3) for more help.
+
+:::
+
 ## Prerequisites
 
-- **.NET 10 SDK** ([Download Link](https://dotnet.microsoft.com/zh-cn/download/dotnet/9.0))
+- **.NET 10 SDK** ([Download Link](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0))
   - (Optional) Visual Studio 2022
 - [DCCM Core Files](/docs/tutorial/install-core)
 

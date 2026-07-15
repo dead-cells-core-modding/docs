@@ -10,13 +10,15 @@ This tutorial will guide you through installing the Dead Cells Core Modding (DCC
 
 For **Linux**, enabling **Proton** for **Dead Cells** is required. Please refer to [this link](https://steamcommunity.com/games/221410/announcements/detail/1696055855739350561).
 
+Join the [Discord server](https://discord.gg/7vp38qsYc4) for more help.
+
 :::
 
 ## Installation
 
 ### Get SteamStartShell
 
-Obtain **SteamStartShell** from [Github](https://github.com/dead-cells-core-modding/core/releases/download/v35.8.4/deadcells.exe)
+Obtain **SteamStartShell** from [Github](https://github.com/dead-cells-core-modding/core/releases/download/v35.12.3/deadcells.exe)
 
 ### Overwrite
 

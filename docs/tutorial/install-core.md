@@ -10,6 +10,8 @@ This tutorial will guide you through installing the Dead Cells Core Modding (DCC
 
 For **Steam** users, [installing from the Workshop](./install-workshop.md) is the best option.
 
+Join the [Discord server](https://discord.gg/7vp38qsYc4) for more help.
+
 :::
 
 ## Prerequisites

@@ -12,6 +12,12 @@ sidebar_position: 3
 本章节大部分代码来自 **Frostbite**。感谢 Frostbite 对本教程的帮助。
 :::
 
+:::tip
+
+加入 [Discord 服务器](https://discord.gg/Z7zzVafaP3) 获取更多帮助。
+
+:::
+
 ## 创建 Mod 项目
 
 按照[教程](./first-mod.md)创造名为 **FirstWeapon** 的 Mod 项目。

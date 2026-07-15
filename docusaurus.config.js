@@ -72,10 +72,15 @@ const config = {
             position: 'left' 
           },
           {
-            href: "https://github.com/dead-cells-core-modding/core", // GitHub仓库链接
-            label: "GitHub", // 显示文本
-            position: "right", // 放在导航栏右侧
+            href: "https://github.com/dead-cells-core-modding/core",
+            label: "GitHub", 
+            position: "right", 
           },
+          {
+            href: "https://discord.gg/7vp38qsYc4", 
+            label: "Discord",
+            position: "right",
+          }
         ],
       },
       prism: {

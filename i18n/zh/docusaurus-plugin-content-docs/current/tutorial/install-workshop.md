@@ -10,13 +10,15 @@ sidebar_position: 2
 
 对于 **Linux** ，为 **Dead Cells** 启用 **Proton** 是必须的。请参阅 [链接](https://steamcommunity.com/games/221410/announcements/detail/1696055855739350561)。
 
+加入 [Discord 服务器](https://discord.gg/7vp38qsYc4) 获取更多帮助。
+
 :::
 
 ## 安装
 
 ### 获取 SteamStartShell
 
-从 [Github](https://github.com/dead-cells-core-modding/core/releases/download/v35.8.4/deadcells.exe) 获取 **SteamStartShell**
+从 [Github](https://github.com/dead-cells-core-modding/core/releases/download/v35.12.3/deadcells.exe) 获取 **SteamStartShell**
 
 ### 覆盖
 

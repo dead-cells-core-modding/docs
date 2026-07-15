@@ -16,6 +16,8 @@ This tutorial will guide you through the game code flow.
 
 Before starting, it's recommended to read the [wiki](https://github.com/HaxeFoundation/hashlink/wiki) for basic information about the **HashLink Virtual Machine**.
 
+Join the [Discord server](https://discord.gg/Z7zzVafaP3) for more help.
+
 :::
 
 ## Using crashlink

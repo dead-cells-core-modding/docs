@@ -10,6 +10,8 @@ sidebar_position: 1
 
 对于 **Steam** 用户来说，[从创意工坊安装](./install-workshop.md)是最好的选择。
 
+加入 [Discord 服务器](https://discord.gg/7vp38qsYc4) 获取更多帮助。
+
 :::
 
 ## 先决条件

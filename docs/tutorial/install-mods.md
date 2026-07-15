@@ -12,6 +12,12 @@ Using the **SampleHook** mod as an example, we'll cover the installation process
 The **Mods directory** referenced in this guide is located at `<DeadCellsGameRoot>/coremod/mods`
 :::
 
+:::tip
+
+Join the [Discord server](https://discord.gg/7vp38qsYc4) for more help.
+
+:::
+
 ## Obtaining Mods
 
 You may acquire **Mods** from any source of your choice

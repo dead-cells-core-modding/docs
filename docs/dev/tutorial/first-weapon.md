@@ -12,6 +12,12 @@ The mod code for this tutorial is stored on [Github](https://github.com/dead-cel
 Most of the code in this section comes from **Frostbite**. Thanks to Frostbite for their assistance with this tutorial.
 :::
 
+:::tip
+
+Join the [Discord server](https://discord.gg/Z7zzVafaP3) for more help.
+
+:::
+
 ## Creating the Mod Project
 
 Follow the [tutorial](./first-mod.md) to create a mod project named **FirstWeapon**.

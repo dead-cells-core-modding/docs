@@ -12,6 +12,12 @@ sidebar_position: 3
 本文所提到的 **Mods 目录** 的路径为`<DeadCellsGameRoot>/coremod/mods`
 :::
 
+:::tip
+
+加入 [Discord 服务器](https://discord.gg/7vp38qsYc4) 获取更多帮助。
+
+:::
+
 ## 获取 Mods
 
 你可以从任何你喜欢的渠道获取 **Mods**
