@@ -20,3 +20,8 @@ yarn-debug.log*
 yarn-error.log*
 /.obsidian
 /.vscode
+
+# OpenCode / AI tools
+.omo/
+.opencode/
+.playwright-mcp/
