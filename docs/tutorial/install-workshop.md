@@ -18,7 +18,7 @@ Join the [Discord server](https://discord.gg/7vp38qsYc4) for more help.
 
 ### Get SteamStartShell
 
-Obtain **SteamStartShell** from [Github](https://github.com/dead-cells-core-modding/core/releases/download/v35.12.3/deadcells.exe)
+Obtain **SteamStartShell** from [Github](https://github.com/dead-cells-core-modding/core/releases/latest/download/deadcells.exe)
 
 ### Overwrite
 

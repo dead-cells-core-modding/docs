@@ -18,7 +18,7 @@ sidebar_position: 2
 
 ### 获取 SteamStartShell
 
-从 [Github](https://github.com/dead-cells-core-modding/core/releases/download/v35.12.3/deadcells.exe) 获取 **SteamStartShell**
+从 [Github](https://github.com/dead-cells-core-modding/core/releases/latest/download/deadcells.exe) 获取 **SteamStartShell**
 
 ### 覆盖
 
