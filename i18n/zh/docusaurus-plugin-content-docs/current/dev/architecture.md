@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 1
 ---
 
 # 架构概述
@@ -38,10 +38,10 @@ DCCM 采用两层模块架构，将所有可扩展单元统一为 `Module` 的�
 
 ### 类层次结构
 
-```
+```text
 Module (抽象基类, 实现 IEventReceiver)
-  └── Module&lt;TModule&gt; (泛型单例基类, 提供 Instance 属性)
-        └── CoreModule&lt;TModule&gt; (核心模块基类, 仅限框架内部)
+  └── Module<TModule> (泛型单例基类, 提供 Instance 属性)
+        └── CoreModule<TModule> (核心模块基类, 仅限框架内部)
   └── ModBase (用户模组基类, 接收 ModInfo 元数据)
 ```
 
@@ -88,7 +88,7 @@ public class MyMod(ModInfo info) : ModBase(info), IOnGameInit
 两类模块的核心区别：
 
 | | CoreModule | ModBase |
-|---|---|---|
+| --- | --- | --- |
 | 用途 | 框架内置服务 | 第三方模组 |
 | 发现方式 | `[CoreModule]` 特性 + 反射扫描 | `modinfo.json` + ModLoader |
 | 加载时机 | Preload 或 Normal | 游戏启动后 |
@@ -121,7 +121,7 @@ EventSystem.BroadcastEvent<ISomeEvent, ISomeEvent.Callback>((receiver, callback)
 框架定义了丰富的生命周期事件接口，位于 `ModCore/Events/Interfaces/` 目录下。常用接口包括：
 
 | 接口 | 触发时机 |
-|---|---|
+| --- | --- |
 | `IOnCoreModuleInitializing` | Preload 模块加载完成后 |
 | `IOnBeforeGameInit` | 游戏 Haxe 入口执行前 |
 | `IOnGameInit` | 游戏窗口创建后 |
@@ -135,7 +135,7 @@ EventSystem.BroadcastEvent<ISomeEvent, ISomeEvent.Callback>((receiver, callback)
 
 DCCM 仓库的核心目录如下：
 
-```
+```text
 DeadCellsCoreModding/
 ├── sources/          # 主 C# 解决方案
 │   ├── ModCore/              # 核心模组框架
@@ -155,18 +155,9 @@ DeadCellsCoreModding/
 `sources/ModCore/` 的内部结构：
 
 | 目录 | 内容 |
-|---|---|
+| --- | --- |
 | `Events/Interfaces/` | 生命周期事件接口定义 |
 | `Modules/` | 核心模块实现（Game、ModLoader、HashlinkHooks 等） |
 | `Hooks/` | Hashlink 函数 Hook 管理器 |
 | `Mods/` | ModBase、ModInfo 等模组基础设施 |
 | `Storage/` | Config、SaveData 等持久化工具 |
-
-## 生态示例
-
-DCCM 的能力在社区项目中得到了充分验证：
-
-- **DeadCellsMultiplayerMod**（联机模组）：基于 DCCM 实现了多人联机功能，展示了框架对网络通信、游戏状态同步的支持能力。
-- **DeadCellsArchipelago**（随机乱序模组）：实现了跨游戏随机物品乱序，体现了 DCCM 对外部服务集成、游戏数据修改的灵活性。
-
-这些项目证明了 DCCM 不仅限于简单的参数修改，而是能够支撑从联机架构到跨游戏集成的复杂模组开发。

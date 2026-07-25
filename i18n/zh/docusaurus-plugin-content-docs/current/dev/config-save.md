@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 6
 ---
 
 # 配置与存档
@@ -69,24 +69,7 @@ DCCM 的 `Config<T>` 处理的是模组的 JSON 配置文件。如果你使用�
 
 `SaveData<T>` 将数据绑定到游戏存档。读取存档时自动恢复数据，保存游戏时自动写入。数据以 JSON 格式嵌入存档文件。
 
-### 声明
-
-```csharp
-using ModCore.Storage;
-
-public class MySaveData
-{
-    public int Coins { get; set; }
-    public List<string> UnlockedItems { get; set; } = new();
-}
-
-// 注册实例，name 需要全局唯一
-public static SaveData<MySaveData> Save { get; } = new("MyMod_SaveData");
-```
-
-与 `Config<T>` 不同：`Config<T>` 绑定 `new()` 约束，`SaveData<T>` 绑定 `class, new()`——因为存档数据需要通过 JSON 反序列化还原引用类型。
-
-### 读写
+### SaveData 声明
 
 同样通过 `Value` 属性操作：
 
@@ -104,7 +87,7 @@ int coins = MyMod.Save.Value.Coins;
 ### 与 Config 的区别
 
 | | Config\<T\> | SaveData\<T\> |
-|---|---|---|
+| --- | --- | --- |
 | 存储位置 | `config/{name}.json` | 嵌入游戏存档文件 |
 | 生命周期 | 模组级别，跨存档共享 | 存档级别，随存档独立 |
 | 适用场景 | 模组设置（按键、开关） | 随存档变化的进度数据 |
@@ -157,7 +140,7 @@ public class OtherDashSword : DashSword, IHxbitSerializable<object>
 ## 关键 API
 
 | API | 说明 |
-|-----|------|
+| --- | --- |
 | `new Config<T>("name")` | 创建配置实例，自动注册到事件系统 |
 | `Config<T>.Value` | 获取/设置配置值（首次访问自动加载） |
 | `Config<T>.Save()` | 手动保存配置到 JSON 文件 |

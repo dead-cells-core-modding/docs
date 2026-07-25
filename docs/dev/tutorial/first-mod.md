@@ -4,146 +4,294 @@ sidebar_position: 2
 
 # Creating Your First Mod
 
-This tutorial will guide you through creating a simple mod that modifies a basic in-game feature.
+This tutorial will guide you through creating a runnable Dead Cells Mod from scratch. We'll build on the **SampleSimple** example project, setting up the project structure step by step, writing entry-point code, and loading custom assets.
 
 :::warning
 
-While **C#** is used for writing **Mods**, remember that **Dead Cells** is written in **Haxe** and runs on the **HaxeLink Virtual Machine**, not the **CoreCLR**.
+Although mods are written in **C#**, Dead Cells itself is built with **Haxe** and runs on the **HashLink virtual machine**, not the .NET CLR.
 
-This tutorial assumes you possess the following skills:
+This tutorial assumes you already have:
 
 - Basic C# programming knowledge
-- Foundational Dead Cells mod creation ([tutorial](https://www.bilibili.com/opus/681293864647000128))
-
-:::
-
-:::tip
-
-Before starting, it's recommended to read the [wiki](https://github.com/HaxeFoundation/hashlink/wiki) for basic information about the **HashLink Virtual Machine**.
-
-Join the [Discord server](https://discord.gg/Z7zzVafaP3) for more help.
+- [MDK installed](/docs/dev/tutorial/install-mdk)
 
 :::
 
 :::info
-The mod code for this tutorial is hosted on [Github](https://github.com/dead-cells-core-modding/docs-zh/blob/main/modproject/FirstDeadCellsMod).
+The complete source code for this tutorial is available at [SampleSimple](https://github.com/dead-cells-core-modding/DeadCellsCoreModding/tree/main/sample/SampleSimple).
 :::
 
-## Creating the Mod Project
+## Creating the Project
 
-- Open the command-line tool
-- Create a new library project:
-
-```bash
-dotnet new classlib -n FirstDeadCellsMod -f net10.0
-```
-
-- Navigate to the project directory:
+Open a terminal and run the following commands:
 
 ```bash
-cd FirstDeadCellsMod
-```
+# Create a net10.0 class library project
+dotnet new classlib -n SimpleMod -f net10.0
 
-- Add the Dead Cells Modding MDK NuGet package reference:
+# Enter the project directory
+cd SimpleMod
 
-```bash
+# Add the MDK NuGet package reference
 dotnet add package DeadCellsCoreModding.MDK
 ```
 
-## Create the Mod Main Class File
+After creating the project, delete the auto-generated `Class1.cs`. We'll create the real entry-point file later.
 
-Create the mod main class file `ModEntry.cs`:
+## Configuring the Project File
+
+Edit `SimpleMod.csproj` and add the following MSBuild properties inside `<PropertyGroup>`:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- Mod type, set to mod for normal mods -->
+    <ModType>mod</ModType>
+    <!-- Mod name, used for output directory and log identification -->
+    <ModName>Simple</ModName>
+    <!-- Fully qualified entry-point class (Namespace.ClassName) -->
+    <ModMain>SampleSimple.SimpleMod</ModMain>
+
+    <!-- Auto-install the mod to the game directory after building -->
+    <AutoInstallMod>true</AutoInstallMod>
+    <!-- Bundle asset files into a single res.pak -->
+    <GenerateSinglePakFile>true</GenerateSinglePakFile>
+  </PropertyGroup>
+  <!-- ... -->
+</Project>
+```
+
+Property descriptions:
+
+| Property | Description |
+| ------ | ------ |
+| `ModType` | Mod type; set to `mod` for normal mods |
+| `ModName` | Mod name; affects output path and log identifiers |
+| `ModMain` | Fully qualified entry-point class name; MDK uses this to reflectively load the mod |
+| `AutoInstallMod` | When `true`, `dotnet build` automatically copies output to the game's mod directory |
+| `GenerateSinglePakFile` | When `true`, assets declared in `PackAssets` are bundled into a single `res.pak` file |
+
+## modinfo.json
+
+MDK **automatically generates** `modinfo.json` during the build based on the csproj configuration. You don't need to write it manually, but it's useful to understand its structure:
+
+```json
+{
+  "name": "Simple",
+  "version": "1.0.0",
+  "type": "mod",
+  "dependencies": [],
+  "dccmversion": "1.0.0"
+}
+```
+
+| Field | Meaning |
+| ------ | ------ |
+| `name` | Mod name; must match the output folder name |
+| `version` | Mod version number |
+| `type` | Type, corresponding to `ModType` |
+| `dependencies` | List of other mod names this mod depends on |
+| `dccmversion` | DCCM version used during the build |
+
+## Writing the Entry-Point Class
+
+Create `SimpleMod.cs` and write the mod's entry-point class. The entry-point class needs to:
+
+1. Inherit from `ModBase`
+2. Override `Initialize()` for initialization
+3. Implement lifecycle event interfaces to respond to game events
+
+### Basic Skeleton
 
 ```csharp
-using ModCore.Events.Interfaces.Game;
 using ModCore.Mods;
 
-namespace FirstDeadCellsMod
+namespace SampleSimple
 {
-    public class FirstDeadCells : ModBase,
-        IOnGameExit
+    public class SimpleMod(ModInfo info) : ModBase(info)
     {
-        public FirstDeadCells(ModInfo info) : base(info) 
-        {
-
-        }
         public override void Initialize()
         {
-            Logger.Information(“Hello, world”);
-        }
-
-        void IOnGameExit.OnGameExit()
-        {
-            Logger.Information(“Game is exiting”);
+            Logger.Information("Hello, World!");
         }
     }
 }
 ```
 
-## Configuring the Mod Project
+`ModBase`'s constructor takes a `ModInfo` parameter containing all the parsed information from `modinfo.json`. The `Info` property is accessible anywhere within the class.
 
-Edit the project file `FirstDeadCellsMod.csproj` and add the following content:
+### Implementing Lifecycle Events
 
-```xml
-<PropertyGroup>
-    <!--Mod Type-->
-    <ModType>mod</ModType>
+DCCM exposes game events through **interfaces**. Implement the corresponding interface to receive callbacks when an event fires:
 
-    <!--FullName of Mod Main Class-->
-    <ModMain>FirstDeadCellsMod.FirstDeadCells</ModMain>
+```csharp
+using ModCore.Events.Interfaces;
+using ModCore.Events.Interfaces.Game;
 
-    <!--Auto-install Mod during build-->
-    <!--<AutoInstallMod>true</AutoInstallMod>-->
-</PropertyGroup>
+public class SimpleMod(ModInfo info) : ModBase(info),
+    IOnGameExit,          // Before the game exits
+    IOnGameEndInit,       // After game initialization completes
+    IOnAfterLoadingAssets // After assets finish loading
+{
+    public override void Initialize()
+    {
+        Logger.Information("Hello, World!");
+    }
 
+    void IOnGameExit.OnGameExit()
+    {
+        Logger.Information("Game is exit");
+    }
+
+    void IOnGameEndInit.OnGameEndInit()
+    {
+        // Game initialization is complete; safe to access game data
+    }
+
+    void IOnAfterLoadingAssets.OnAfterLoadingAssets()
+    {
+        // Asset loading is complete; safe to load custom assets
+    }
+}
 ```
 
-## Build the Mod
+:::tip Event Interface Naming
+Event interfaces follow the `IOn<EventName>` naming convention. Interface methods use **explicit implementation** (`void IOnGameExit.OnGameExit()`) to avoid polluting the class's public interface.
+:::
 
-Run the build command in the project directory:
+## Adding Assets
+
+One of a mod's core capabilities is loading custom assets (textures, data, text, etc.). DCCM uses `PackAssets` to declare asset files and loads them within `IOnAfterLoadingAssets`.
+
+### Declaring Assets
+
+Add the following inside `<ItemGroup>` in the csproj:
+
+```xml
+<ItemGroup>
+  <PackAssets Include="assets/**/*" RootInPak="sample_simple" />
+</ItemGroup>
+```
+
+- `Include="assets/**/*"` — includes all files under the `assets` directory for packaging
+- `RootInPak="sample_simple"` — these files will have `sample_simple` as their root path inside the pak
+
+Create an `assets` folder in the project root and add a test file `test1.txt` with any content.
+
+### Loading Assets
+
+Load the pak in `IOnAfterLoadingAssets` and access assets in `IOnGameEndInit`:
+
+```csharp
+using dc.hxd;
+using ModCore.Utilities;
+
+void IOnAfterLoadingAssets.OnAfterLoadingAssets()
+{
+    var res = Info.ModRoot!.GetFilePath("res.pak");
+    FsPak.Instance.FileSystem.loadPak(res.AsHaxeString());
+}
+
+void IOnGameEndInit.OnGameEndInit()
+{
+    var test1 = Res.Class.load("sample_simple/test1.txt".AsHaxeString());
+    Logger.Information("The content of test1.txt is {text}", test1.toText());
+}
+```
+
+Key points:
+
+- `Info.ModRoot!.GetFilePath("res.pak")` gets the absolute path of `res.pak` under the mod's root directory
+- `FsPak.Instance.FileSystem.loadPak()` mounts the pak into the game's file system
+- `Res.Class.load()` accesses resources via their relative path inside the pak
+- The `AsHaxeString()` extension method converts a C# string to a Haxe string, a necessary step for HashLink interop
+
+## Complete Code
+
+Putting everything together, here's the full `SimpleMod.cs`:
+
+```csharp
+using dc;
+using dc.hxd;
+using ModCore.Events.Interfaces;
+using ModCore.Events.Interfaces.Game;
+using ModCore.Mods;
+using ModCore.Modules;
+using ModCore.Utilities;
+
+namespace SampleSimple
+{
+    public class SimpleMod(ModInfo info) : ModBase(info),
+        IOnGameExit,
+        IOnGameEndInit,
+        IOnAfterLoadingAssets
+    {
+        public override void Initialize()
+        {
+            Logger.Information("Hello, World!");
+        }
+
+        void IOnAfterLoadingAssets.OnAfterLoadingAssets()
+        {
+            var res = Info.ModRoot!.GetFilePath("res.pak");
+            FsPak.Instance.FileSystem.loadPak(res.AsHaxeString());
+        }
+
+        void IOnGameEndInit.OnGameEndInit()
+        {
+            var test1 = Res.Class.load("sample_simple/test1.txt".AsHaxeString());
+
+            Logger.Information("The content of test1.txt is {text}", test1.toText());
+        }
+
+        void IOnGameExit.OnGameExit()
+        {
+            Logger.Information("Game is exit");
+        }
+    }
+}
+```
+
+## Building and Testing
 
 ```bash
 dotnet build
 ```
 
-After successful build, the mod files will be generated in the `bin\Debug\net10.0\output` directory (`$(OutputPath)\output`).
+After a successful build, the output is located at `bin\Debug\net10.0\output`. If `AutoInstallMod` is enabled, the mod is automatically installed to the game's mod directory.
 
-## Test the Mod
-
-- Install the mod following the [tutorial](/docs/tutorial/install-mods.md)
-- Launch the game via `DeadCellsModding.exe`
-- Check the game logs to confirm mod loading
-
-:::info
-You should see log entries similar to:
+Launch the game via `DeadCellsModding.exe` and check the logs to confirm the mod loaded:
 
 ```text
-[13:47:52 INF][FirstDeadCells] Hello, world
+[13:47:52 INF][Simple] Hello, World!
+[13:47:53 INF][Simple] The content of test1.txt is <your text content>
 ```
 
-:::
-
-## QA
+## FAQ
 
 ### Build Fails
 
-- Ensure .NET 10 SDK is installed
-- Verify NuGet packages referenced in the project are available
-- Try cleaning the solution and rebuilding:
+- Make sure [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) is installed
+- Make sure the MDK NuGet source is configured (see [Installing MDK](/docs/dev/tutorial/install-mdk))
+- Try cleaning and rebuilding:
 
-```powershell
+```bash
 dotnet clean
 dotnet build
 ```
 
 ### Mod Doesn't Load
 
-1. Verify the `name` in `modinfo.json` exactly matches the folder name
-2. Confirm the classpath specified in `ModMain` is correct
-3. Check the log for error messages
+1. Check that the `name` in `modinfo.json` matches the output folder name
+2. Verify that the class path specified in `ModMain` is fully correct (namespace + class name)
+3. Check the logs for error messages
 
 ### Game Crashes
 
-- Inspect the Mod code for exceptions
-- Try disabling other Mods for isolation testing
-- Review the log for detailed information
+- Check whether the mod code throws unhandled exceptions
+- Try disabling other mods to isolate the issue
+- Make sure no `AsHaxeString()` calls are missing

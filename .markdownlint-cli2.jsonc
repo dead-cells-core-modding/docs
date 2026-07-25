@@ -1,13 +1,5 @@
 {
   "config": {
-    "default": true,
-    "MD013": false,
-    "MD025": false,
-    "MD033": false,
-    "MD024": {
-      "allow_different_nesting": true
-    },
-    "MD060": true,
-    "MD040": true
+    "MD013": false
   }
 }

@@ -2,9 +2,10 @@
 sidebar_position: 2
 ---
 
-# MDK（Mod Development Kit）
+# MDK（Mod Development Kit）与模组依赖
 
-MDK 是 DCCM 提供的模组开发工具链，负责构建时的资源打包、CastleDB 差异生成、modinfo.json 生成和自动安装。通过 NuGet 包 `DeadCellsCoreModding.MDK` 引入。
+MDK 是 DCCM 的模组开发工具链，负责资源打包、CDB 差异生成、
+modinfo.json 生成和自动安装。通过 NuGet 包 `DeadCellsCoreModding.MDK` 引入。
 
 ## 安装
 
@@ -37,7 +38,7 @@ MDK 包自动导入 `.props` 和 `.targets`，提供所有构建属性与目标�
 以下属性在 `.csproj` 的 `<PropertyGroup>` 中配置：
 
 | 属性 | 必须 | 说明 |
-|------|:--:|------|
+| ------ | :--: | ------ |
 | `ModName` | 否 | 模组名称，默认取 `$(AssemblyName)`。必须与 `modinfo.json` 的 `name` 一致 |
 | `ModType` | 是 | 模组类型：`mod`（普通模组）或 `library`（库） |
 | `ModMain` | 是 | 模组入口类的完全限定名，如 `MyMod.MainClass` |
@@ -56,7 +57,7 @@ MDK 包自动导入 `.props` 和 `.targets`，提供所有构建属性与目标�
 在 `<ItemGroup>` 中声明：
 
 | 项 | 说明 |
-|----|------|
+| ---- | ------ |
 | `PackAssets` | 要打包的资源文件，属性 `RootInPak` 指定在 pak 中的根路径 |
 | `ModDependency` | 依赖的模组名称 |
 | `OutputFiles` | 额外输出到构建目录的文件 |
@@ -77,7 +78,8 @@ MDK 包自动导入 `.props` 和 `.targets`，提供所有构建属性与目标�
 1. **解析依赖** — 查找 `<ModDependency>` 指定的模组，写入 `modinfo.json` 的 `dependencies`
 2. **生成 modinfo.json** — 从 MSBuild 属性自动生成。如果项目目录存在 `modinfo.json` 模板，与之合并
 3. **打包资源** — DCCMTool 将 `PackAssets` 打包为中间 `.pak`
-4. **生成 CDB 补丁**（`GenerateDiffCDB=true` 时）— DCCMTool 将 `data.cdb` 与 `v$(GameVersion)` 模板对比，生成差异 `.pak`
+4. **生成 CDB 补丁**（`GenerateDiffCDB=true` 时）— DCCMTool 对比
+   `data.cdb` 与 `v$(GameVersion)` 模板，生成差异 `.pak`
 5. **合并 PAK** — 合并中间 `.pak` 为 `res.pak`
 6. **输出** — 复制 DLL、`res.pak`、预览图到 `$(OutputPath)/output/$(ModName)/`
 7. **自动安装**（`AutoInstallMod=true` 时）— 复制到 `coremod/mods/$(ModName)/`
@@ -87,7 +89,7 @@ MDK 包自动导入 `.props` 和 `.targets`，提供所有构建属性与目标�
 MDK 的核心命令行工具，提供以下与模组开发相关的命令：
 
 | 命令 | 说明 |
-|------|------|
+| ------ | ------ |
 | `pak pack files -i 源=目标路径 -o 输出.pak` | 打包文件为 PAK |
 | `pak pack dir -i 目录 -o 输出.pak` | 打包目录为 PAK |
 | `pak merge -i a.pak -i b.pak -o 合并.pak` | 合并多个 PAK |
@@ -105,7 +107,7 @@ MDK 的核心命令行工具，提供以下与模组开发相关的命令：
 dotnet "$env:DCCM_MDK_ROOT/tools/DCCMTool.dll" pak unpack -i res.pak -o ./unpacked
 ```
 
-## 常见问题
+## 常见问题 — MDK
 
 **`dotnet build` 提示找不到 MDK？**
 
@@ -121,7 +123,7 @@ dotnet "$env:DCCM_MDK_ROOT/tools/DCCMTool.dll" pak unpack -i res.pak -o ./unpack
 
 ---
 
-# 模组依赖
+## 模组依赖
 
 模组可以引用其他已安装的模组作为依赖。通过 `<ModDependency>` 声明，MDK 自动处理程序集引用和 `modinfo.json` 生成。
 
@@ -139,7 +141,9 @@ dotnet "$env:DCCM_MDK_ROOT/tools/DCCMTool.dll" pak unpack -i res.pak -o ./unpack
 </ItemGroup>
 ```
 
-`<ModDependency>` 将模组文件夹加入 `AssemblySearchPaths`，使 MSBuild 能找到其 DLL。`<Reference>` 实际引用 DLL 进行编译，使代码中可使用该模组的类型。**两者缺一不可**。
+`<ModDependency>` 将模组目录加入 `AssemblySearchPaths`，
+使 MSBuild 找到其 DLL。`<Reference>` 实际引用 DLL 编译，
+使代码中使用其类型。**两者缺一不可**。
 
 可指定版本要求：
 
@@ -174,7 +178,7 @@ dotnet "$env:DCCM_MDK_ROOT/tools/DCCMTool.dll" pak unpack -i res.pak -o ./unpack
 
 依赖模组应为 `library` 类型（`<ModType>library</ModType>`）。库模组不包含 `ModMain`，仅提供可复用的类型与方法。
 
-## 常见问题
+## 常见问题 — 依赖
 
 **提示找不到依赖模组？**
 

@@ -1,143 +1,144 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 # Modifying In-Game Cutscenes
-This tutorial will guide you through rewriting in-game cutscenes and understanding the cutscene logic in Dead Cells.
+This tutorial will guide you through overriding in-game cutscenes and understanding Dead Cells' cutscene logic.
 :::tip
-I expect you to have:
-- Basic C# programming skills
-- Basic Dead Cells modding knowledge ([tutorial](https://www.bilibili.com/opus/681293864647000128))
+You should have:
+- Basic C# programming knowledge
+- Foundational Dead Cells mod creation ([tutorial](https://www.bilibili.com/opus/681293864647000128))
 :::
 
 ---
-# Step One: Locate the cutscene you wish to modify
-All in-game cutscenes reside within the `cine` folder
 
+# Step 1: Find the Cutscene You Want to Modify
+The `cine` folder contains all in-game cutscenes.
 ![](./img/cm/cm1.png)
 
 ---
-# Step 2: Analyse the code
-### Using the example of Wang Shou meeting the King
-First, examine the main class of the function
+
+# Step 2: Analyze the Code
+### Example: Hand of the King Meeting the King
+First, examine the main class of the function.
+
 ![](./img/cm/cm0.png)
 
-We observe that the boss's movement can be modified within the update method
+We can see that the boss's movement can be modified in `update`.
 ![](./img/cm/cm2.png)
 
-## Inspecting the static class
-This is the actual animation playback class – don't be intimidated by the multitude of methods
+## Examine the Static Class
+This is the class that actually plays the cutscene. Don't be intimidated by all the methods.
 ![](./img/cm/cm3.png)
 
-We need only focus on this static method, which forms the core of animation playback:
+Focus on this static method, it's the core of cutscene playback:
 ![](./img/cm/cm4.png)
 
 
 ---
-# Step Three: Writing the Code
-## Hook Implementation
-Add the following two Hooks within the `Initialize()` method:
-The first targets the main class's update method
+
+# Step 3: Write the Code
+## Hooking
+Add the following two hooks in the `Initialize()` method:
+The first hooks the main class's `update` method
 ```csharp
-Hook_EnterThroneRoomAsKing.update += Hook_EnterThroneRoomAsKing__update;//Dynamic class
+Hook_EnterThroneRoomAsKing.update += Hook_EnterThroneRoomAsKing_update; // dynamic class
 ```
-The second targets the static method of the static class
+The second hooks the static class's static method
 ```csharp
-Hook__EnterThroneRoomAsKing.__constructor__ += Hook__EnterThroneRoomAsKing__constructor__;//Static class
+Hook__EnterThroneRoomAsKing.__constructor__ += Hook__EnterThroneRoomAsKing__constructor__; // static class
 ```
 
-## Overriding Original Animation
-`self.cm = new Cinematic((int)self.tmod);` overrides the original static function's animation logic
+## Overriding the Original Cutscene
+`self.cm = new Cinematic((int)self.tmod);` overrides the original static function's cutscene logic.
 ```csharp
     private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing.orig_update orig, EnterThroneRoomAsKing self)
 
     {
-        orig(self); // Invoke original logic
+        orig(self); // call original logic
 
-        self.cm = new Cinematic((int)self.tmod);// Override the original animation logic
-}
-private void Hook__EnterThroneRoomAsKing__constructor__(Hook__EnterThroneRoomAsKing.orig___constructor__ orig, EnterThroneRoomAsKing _hero, Hero game)
+        self.cm = new Cinematic((int)self.tmod); // override original cutscene logic
+    }
+    private void Hook__EnterThroneRoomAsKing__constructor__(Hook__EnterThroneRoomAsKing.orig___constructor__ orig, EnterThroneRoomAsKing _hero, Hero game)
 
-    {
-    orig(_hero, game); // Invokes original logic, but bypasses original animation
+    {
+        orig(_hero, game); // call original logic, but won't call the original cutscene
+        
     }
 ```
-This completes the removal of the original animation.
-You may now:
-1. Play the corresponding animation in static classes
-2. Modify boss and hero behaviour in dynamic classes
+This removes the original cutscene.
+From here you can:
+1. Play the appropriate cutscene in the static class
+2. Modify boss and hero behavior in the dynamic class
+
 ---
 
 # Simple Example
 
-### Wang Shou flees upon seeing the King
+### Hand of the King Flees Upon Seeing the King
 
 ```csharp
 private void Hook_EnterThroneRoomAsKing_constructor_(Hook_EnterThroneRoomAsKing_orig_constructor_ orig, EnterThroneRoomAsKing _hero, Hero game)
 {
-    orig(_hero, game); // Safely invoke the original constructor
-    // Since we dynamically override new logic, we can safely call orig
+    orig(_hero, game); // safely call the original constructor
+    // Since we override with new logic in the dynamic class, we can safely call orig
+
     var boss = _hero.boss;
-    if (boss.cx - _hero.hero.cx > 3) // Check distance from hero
+    if (boss.cx - _hero.hero.cx > 3) // check distance from the hero
     {
-    if (boss.spr.groupName?.ToString() != "runShield")
-        // Play the "runShield" animation statically and loop 999 times
-        boss.spr.get_m().play("runShield".AsHaxeString(), 0, false).loop(999); 
+        if (boss.spr.groupName?.ToString() != "runShield")
+            // statically play the "shield run" animation and loop 999 times
+            boss.spr.get_m().play("runShield".AsHaxeString(), 0, false).loop(999); 
     }
-    // Example: Play the animation statically. Make the King run.
+    // Example: playing an animation in the static class. Makes the Hand of the King run.
 }
 
 private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing_orig_update orig, EnterThroneRoomAsKing self)
 {
-    orig(self); // Call the original update function
+    orig(self); // call the original update function
     
-    self.cm = new Cinematic((int)self.tmod); // Initialise cinematic controller
+    self.cm = new Cinematic((int)self.tmod); // initialize the cutscene controller
     var boss = self.boss;
-    boss.dx = 0.5 * (double)boss.dir; // Set movement speed based on direction
+    boss.dx = 0.5 * (double)boss.dir; // set movement speed based on direction
 }
 ```
 
 
 
 :::warning
-> **A new Cinematic instance must be created** > If a new `Cinematic` object is not explicitly created, the game engine will execute the default original cutscene logic.
+ **You must create a new Cinematic instance** — if you don't explicitly create a new `Cinematic` object, the game engine will execute the default original cutscene logic.
 :::
-# This is how it looks when running
+# Here's What It Looks Like
 
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115627398269311&bvid=BV1iCSEBzEQn&cid=34337590920&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
 
 ## Final Code
 
-
 ---
 ![](./img/cm/cm.png)
 
+## How Static and Dynamic Methods Collaborate
 
-## Dynamic and Static Method Collaboration Mechanism
+### Static Methods
 
-
-### Static Methods (Static)
-
-- **Execution Timing**: Executed once during initialisation phase
+- **Execution timing**: Executed once during the initialization phase
     
-- **Primary Function**: Play Sprite animations, set initial states
+- **Primary role**: Play sprite animations and set initial state
     
-- **Example**: `boss.spr.get_m().play()` - Retrieve and play corresponding animation
+- **Example**: `boss.spr.get_m().play()` — gets and plays the corresponding animation
     
 
+### Dynamic Methods
 
-### Dynamic Methods (Dynamic)
-
-- **Execution Timing**: Executed during each frame update.
+- **Execution timing**: Executed every frame during update
     
-- **Primary Function**: Modify attributes such as position and velocity in real-time.
+- **Primary role**: Modify position, speed, and other properties in real time
     
-- **Example**: `boss.dx = 0.5 * boss.dir` - Controls movement speed. `Moves towards the boss's facing direction at 0.5 speed`. This automatically triggers the walking animation.
+- **Example**: `boss.dx = 0.5 * boss.dir` — controls movement speed, moving at 0.5 speed in the direction the boss is facing; the walking animation plays automatically.
 
-### Collaborative Relationship
+### Collaboration
 ![Project Structure Diagram](./img/Pasted-en.png)
 
 ---
 
-This separation of dynamic and static elements ensures both stable animation performance and flexible logical control.
-
+Through this static-dynamic separation design, both animation stability and logic control flexibility are achieved.

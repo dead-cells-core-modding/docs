@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # 创造第一个 Mod
@@ -68,7 +68,7 @@ dotnet add package DeadCellsCoreModding.MDK
 各属性说明：
 
 | 属性 | 作用 |
-|------|------|
+| ------ | ------ |
 | `ModType` | Mod 类型，普通 Mod 设为 `mod` |
 | `ModName` | Mod 名称，影响输出路径和日志中的标识 |
 | `ModMain` | 入口类的完整限定名，MDK 通过此名称反射加载 Mod |
@@ -90,7 +90,7 @@ MDK 会在构建时根据 csproj 配置**自动生成** `modinfo.json`。你无�
 ```
 
 | 字段 | 含义 |
-|------|------|
+| ------ | ------ |
 | `name` | Mod 名称，必须与输出文件夹名一致 |
 | `version` | Mod 版本号 |
 | `type` | 类型，对应 `ModType` |

@@ -78,72 +78,24 @@ SampleHook
 
 :::
 
-#### 3. 校验 modinfo.json
-
-`modinfo.json` 是加载器识别 Mod 的唯一依据。安装前请确认以下内容：
-
-| 字段 | 必填 | 说明 |
-|------|------|------|
-| `name` | 是 | Mod 名称，**必须与文件夹名完全一致**（区分大小写和空格） |
-| `version` | 是 | Mod 版本号 |
-| `type` | 是 | Mod 类型，通常为 `"normal"` |
-| `dependencies` | 否 | 依赖的其他 Mod 名称列表 |
-| `dccmversion` | 否 | 目标 DCCM 版本。若填写，主版本号必须与当前 DCCM 主版本一致，否则会收到版本不匹配警告 |
-
-示例：
-
-```json
-{
-  "name": "SampleHook",
-  "version": "1.0.0",
-  "type": "normal",
-  "dependencies": [],
-  "dccmversion": "2.0.0"
-}
-```
-
-:::warning
-
-如果 `name` 与文件夹名不一致，加载器可能：
-
-- 将 Mod 识别为另一个名称，导致资源路径错误
-- 与同名 Mod 冲突时被跳过加载
-- 无法正确关联 Mod 的存储数据
-
-:::
-
-#### 4. 启动游戏
+#### 3. 启动游戏
 
 通过 `DeadCellsModding.exe` 启动游戏，加载器会自动扫描 `coremod/mods` 目录并加载所有有效的 Mods。
 
 你可以在游戏主菜单左下角看到 DCCM 版本号，确认核心已正常加载。
 
-## 常见问题
+## 加载优先级
 
-### Mod 无法加载
+ModLoader 按以下顺序扫描 Mods：
 
-- 确认 `modinfo.json` 文件格式正确（可使用 JSON 验证工具）
-- 确认 `name` 字段与文件夹名完全一致（包括大小写和空格）
-- 查看游戏日志中的错误信息
+1. **本地 Mods**：`coremod/mods/` 下的所有子文件夹
+2. **Steam 创意工坊 Mods**：`DCCM_EXTRA_MODS_PATHS` 环境变量指向的 Workshop 路径（由 SteamStartShell 写入）
 
-### DLL 依赖缺失
+当本地 Mod 与 Workshop Mod **同名**（`modinfo.json` 中 `name` 相同）时，**本地版本优先**——先扫描到的本地 Mod 被加载后，后续遇到的同名 Workshop Mod 会被跳过并输出警告。
 
-- 确认 Mod 所需的 `.dll` 文件已放在 Mod 文件夹内
-- 确认已安装 [.NET 10 运行时](./install-core.md#先决条件)
-- 查看游戏日志中是否有 `FileNotFoundException` 或 `DllNotFoundException`
+:::info 仅 Steam 启动可用
 
-### DCCM 版本不匹配
+Steam 创意工坊 Mod 的自动发现依赖 SteamStartShell 写入的环境变量。直接通过 `DeadCellsModding.exe` 启动游戏时仅加载本地 Mods。
 
-- 确认 `modinfo.json` 中的 `dccmversion` 主版本号与当前 DCCM 主版本一致
-- 若不需要版本检查，可删除 `dccmversion` 字段
-- 查看游戏日志中是否有版本警告信息
+:::
 
-### Mod 加载后无效果
-
-- 查看游戏日志是否有警告或错误
-
-### 多个 Mod 冲突
-
-- 检查 Mod 依赖关系
-- 尝试逐个启用 Mod 进行排查
-- 查看游戏日志是否有警告或错误

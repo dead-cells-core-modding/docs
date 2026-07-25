@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 5
 ---
 
 # Hook 系统
@@ -160,26 +160,26 @@ handle.Enable();
 - **避免死循环**：在 Hook 处理器内部不要通过其他路径再次触发同一个被 Hook 的函数。
 - **手动 Enable 时的默认行为**：`CreateHook` 的 `enableByDefault` 参数默认为 `true`。如果显式传入 `false`，则需要手动调用 `.Enable()`。
 
-# HarmonyX
+## HarmonyX
 
-## 概述
+### HarmonyX 概述
 
 DCCM 内置了对 [HarmonyX](https://github.com/BepInEx/HarmonyX)（MonoMod 生态下的 Harmony 分支）的支持。通过 `HarmonyXModule`（优先级 `-999999` 的 Preload 核心模块），DCCM 将 HarmonyX 的 `PatchManager.ResolvePatcher` 事件桥接到 `HashlinkFunctionPatcher`。对于标记了 `[HashlinkFIndex]` 的代理类型，可直接使用标准 `[HarmonyPatch]` 属性编写 Hook，无需学习 DCCM 的委托约定。
 
 :::info 参考链接
 
-- **HarmonyX GitHub**: https://github.com/BepInEx/HarmonyX — HarmonyX 是 MonoMod 生态中 [Harmony](https://github.com/pardeike/Harmony) 的改进分支，由 BepInEx 团队维护。
-- **Harmony 官方文档**: https://harmony.pardeike.net/articles/intro.html — HarmonyX 与 Harmony API 兼容，可直接参考 Harmony 官方文档中的 Patch 编写指南。
+- **HarmonyX GitHub**: [github.com/BepInEx/HarmonyX](https://github.com/BepInEx/HarmonyX) — HarmonyX 是 MonoMod 生态中 [Harmony](https://github.com/pardeike/Harmony) 的改进分支，由 BepInEx 团队维护。
+- **Harmony 官方文档**: [harmony.pardeike.net](https://harmony.pardeike.net/articles/intro.html) — HarmonyX 与 Harmony API 兼容，可直接参考 Harmony 官方文档中的 Patch 编写指南。
 
 :::
 
-## 与 CreateHook 的关系
+### 与 CreateHook 的关系
 
 HarmonyX Patch 与通过 `CreateHook` 注册的 Hook **共用同一 Hook 链**。无论哪种方式，最终都由 `HashlinkHookManager` 按优先级统一排序执行。两者可以**在同一函数上同时使用**，互不冲突——在 `HarmonyXTest.Test_2` 中，HarmonyX Patch 和事件式 `Hook_Bounds.load` 订阅共同作用于 `Bounds.load`，各自按声明的优先级参与链式调用。
 
-## 基本用法
+### 基本用法
 
-### 声明 Patch 类
+#### 声明 Patch 类
 
 使用 `[HarmonyPatch]` 标注一个内部静态类，在其中定义 `Prefix` 和 `Postfix` 方法拦截目标函数。通过 `[HarmonyPriority]` 控制多个 Patch 的执行顺序，值越大越优先。
 
@@ -209,7 +209,7 @@ private static class Patch_MyBoundsLoad
 }
 ```
 
-### 应用与取消 Patch
+#### 应用与取消 Patch
 
 调用 `Harmony.CreateAndPatchAll()` 应用 Patch，返回的 `Harmony` 实例可用于后续取消：
 
@@ -229,7 +229,7 @@ void OnUnload()
 }
 ```
 
-### 多个 Patch 的优先级
+#### 多个 Patch 的优先级
 
 若多个模组对同一函数注册了 Patch，通过 `[HarmonyPriority]` 控制执行顺序。优先级值**越大越先执行**：
 
@@ -243,7 +243,7 @@ private static class Patch_HighPriority { /* ... */ }
 private static class Patch_LowPriority { /* ... */ }
 ```
 
-### 与事件式 Hook 混用
+#### 与事件式 Hook 混用
 
 HarmonyX Patch 可与基于事件订阅的 DCCM Hook 在同一函数上共存。以下代码来自 `HarmonyXTest.Test_2`：
 
@@ -264,10 +264,10 @@ Hook_Bounds.load += (orig, self, b) =>
 
 三者按照各自优先级在**同一条 Hook 链**上依次执行，互不干扰。取消时分别调用 `-=` 取消事件、`UnpatchSelf()` 取消 Patch。
 
-## 与 CreateHook 的对比
+### 与 CreateHook 的对比
 
 | 特性 | HarmonyX | CreateHook |
-|------|----------|------------|
+| ------ | ---------- | ------------ |
 | 声明方式 | `[HarmonyPatch]` 属性标注静态类 | 显式调用 `HashlinkHooks.Instance.CreateHook()` |
 | 方法签名 | 通过参数注入自动匹配（`__instance`、参数按位置传入） | 需手动声明委托类型，`orig` 必须作为第一个参数 |
 | 拦截模式 | Prefix / Postfix / Finalizer，各阶段分离 | 单一处理器，通过是否调用 `orig` 决定前置/后置/替换 |

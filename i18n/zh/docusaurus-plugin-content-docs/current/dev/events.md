@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 4
 ---
 
 # 事件系统
@@ -11,7 +11,7 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 `[Event]` 属性支持一个可选参数：
 
 | 参数 | 含义 |
-|------|------|
+| --- | --- |
 | `once: true`（等价 `[Event(true)]`） | 一次性事件，只触发一次（生命周期事件） |
 | `once: false`（等价 `[Event(false)]`） | 可重复触发（如每帧事件、Native 解析事件） |
 | 默认（`[Event]`） | 可重复触发 |
@@ -21,7 +21,7 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 ### 框架初始化
 
 | 接口名 | 触发时机 | 所在文件 |
-|--------|----------|----------|
+| --- | --- | --- |
 | `IOnCoreModuleInitializing` | Core 初始化，加载预加载模块前 | `IOnCoreModuleInitializing.cs` |
 | `IOnAdvancedModuleInitializing` | 高级模块初始化阶段 | `IOnAdvancedModuleInitializing.cs` |
 | `IOnPluginInitializing` | 单个插件开始初始化时 | `IOnPluginInitializing.cs` |
@@ -31,7 +31,7 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 ### 资源加载
 
 | 接口名 | 触发时机 | 所在文件 |
-|--------|----------|----------|
+| --- | --- | --- |
 | `IOnAfterLoadingAssets` | 游戏资源加载完成后，可在此加载自定义 res.pak | `IOnAfterLoadingAssets.cs` |
 | `IOnAfterLoadingCDB` | CDB 数据加载完成后，参数为 `_Data_ cdb` | `Game/IOnAfterLoadingCDB.cs` |
 | `IOnLoadingLanguage` | 加载语言时，参数为语言代码 `string lang` | `Game/IOnLoadingLanguage.cs` |
@@ -39,7 +39,7 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 ### 游戏生命周期
 
 | 接口名 | 触发时机 | 所在文件 |
-|--------|----------|----------|
+| --- | --- | --- |
 | `IOnBeforeGameInit` | Haxe 主入口执行时（窗口创建前） | `Game/IOnBeforeGameInit.cs` |
 | `IOnGameInit` | 窗口创建时，游戏开始初始化 | `Game/IOnGameInit.cs` |
 | `IOnGameEndInit` | 游戏初始化完成时 | `Game/IOnGameEndInit.cs` |
@@ -51,7 +51,7 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 ### 英雄（Hero）
 
 | 接口名 | 触发时机 | 所在文件 |
-|--------|----------|----------|
+| --- | --- | --- |
 | `IOnHeroInit` | 英雄对象初始化时 | `Game/Hero/IOnHeroInit.cs` |
 | `IOnHeroUpdate` | 英雄存在时，每帧触发。参数 `double dt` | `Game/Hero/IOnHeroUpdate.cs` |
 | `IOnHeroDispose` | 英雄对象被销毁时 | `Game/Hero/IOnHeroDispose.cs` |
@@ -59,7 +59,7 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 ### 存档（Save）
 
 | 接口名 | 触发时机 | 所在文件 |
-|--------|----------|----------|
+| --- | --- | --- |
 | `IOnBeforeLoadingSave` | 加载存档前 | `Game/Save/IOnBeforeLoadingSave.cs` |
 | `IOnAfterLoadingSave` | 存档加载完成后，参数 `User data` | `Game/Save/IOnAfterLoadingSave.cs` |
 | `IOnAfterLoadingModdedSave` | 模组存档数据加载完成后，参数 `Func<string, JObject?> getData` | `Game/Save/IOnAfterLoadingModdedSave.cs` |
@@ -72,13 +72,13 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 ### 菜单（Menu）
 
 | 接口名 | 触发时机 | 所在文件 |
-|--------|----------|----------|
+| --- | --- | --- |
 | `IOnAfterPauseMenuBuild` | 暂停菜单构建完成后，参数 `Pause pause` | `Game/Menu/IOnAfterPauseMenuBuild.cs` |
 
 ### 虚拟机（VM）
 
 | 接口名 | 触发时机 | 所在文件 |
-|--------|----------|----------|
+| --- | --- | --- |
 | `IOnHashlinkVMReady` | Hashlink 虚拟机就绪时 | `VM/IOnHashlinkVMReady.cs` |
 | `IOnResolveNativeLib` | 解析原生库时，返回 `EventResult<nint>` | `VM/IOnResolveNativeLib.cs` |
 | `IOnResolveNativeFunction` | 解析原生函数时，返回 `EventResult<nint>` | `VM/IOnResolveNativeFunction.cs` |
@@ -86,7 +86,7 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 ### 模组发现
 
 | 接口名 | 触发时机 | 所在文件 |
-|--------|----------|----------|
+| --- | --- | --- |
 | `IOnFindingMods` | 扫描模组目录时，参数 `Action<string> findMod` | `Mods/IOnFindingMods.cs` |
 | `IOnRegisterModsType` | 注册模组类型时，参数 `AddModType add` | `Mods/IOnRegisterModsType.cs` |
 | `IOnCollectedModInfo` | 加载器处理每个模组信息时，参数 `ModInfo info` | `Mods/IOnCollectedModInfo.cs` |
