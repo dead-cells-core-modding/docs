@@ -159,7 +159,7 @@ public class SimpleMod(ModInfo info) : ModBase(info),
 }
 ```
 
-:::tip Event Interface Naming
+:::tip
 Event interfaces follow the `IOn<EventName>` naming convention. Interface methods use **explicit implementation** (`void IOnGameExit.OnGameExit()`) to avoid polluting the class's public interface.
 :::
 

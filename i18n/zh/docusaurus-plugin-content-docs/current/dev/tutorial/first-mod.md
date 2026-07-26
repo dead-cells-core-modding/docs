@@ -159,7 +159,7 @@ public class SimpleMod(ModInfo info) : ModBase(info),
 }
 ```
 
-:::tip 事件接口命名
+:::tip
 事件接口遵循 `IOn<事件名>` 命名规则。接口方法使用**显式实现**（`void IOnGameExit.OnGameExit()`），避免污染类的公共接口。
 :::
 

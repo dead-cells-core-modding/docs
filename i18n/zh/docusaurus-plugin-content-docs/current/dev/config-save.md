@@ -61,7 +61,7 @@ MyModConfig.Instance.Save();
 MyModConfig.Instance.SerializerOptions.Formatting = Formatting.None;
 ```
 
-:::tip 外部配置库
+:::tip
 DCCM 的 `Config<T>` 处理的是模组的 JSON 配置文件。如果你使用其他库的配置系统（如 `ConfigurationManager`），两者互不冲突，分别管理各自的文件。
 :::
 

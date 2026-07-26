@@ -52,7 +52,7 @@ SampleHook
 
 Copy the Mod folder into the **Mods directory**.
 
-:::warning Folder Naming Rules
+:::warning
 
 **The folder name must exactly match the `name` field in `modinfo.json`** (case-sensitive and space-sensitive), otherwise the loader will be unable to correctly recognize the Mod.
 
@@ -92,9 +92,3 @@ The ModLoader scans Mods in the following order:
 2. **Steam Workshop Mods**: the Workshop path pointed to by the `DCCM_EXTRA_MODS_PATHS` environment variable (written by SteamStartShell)
 
 When a local Mod and a Workshop Mod share the **same name** (same `name` in `modinfo.json`), the **local version takes priority**. Once a local Mod scanned first is loaded, subsequent Workshop Mods with the same name encountered later will be skipped with a warning.
-
-:::info Steam Launch Only
-
-The automatic discovery of Steam Workshop Mods depends on environment variables written by SteamStartShell. Launching the game directly via `DeadCellsModding.exe` will only load local Mods.
-
-:::

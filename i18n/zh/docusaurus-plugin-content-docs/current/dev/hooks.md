@@ -166,7 +166,7 @@ handle.Enable();
 
 DCCM 内置了对 [HarmonyX](https://github.com/BepInEx/HarmonyX)（MonoMod 生态下的 Harmony 分支）的支持。通过 `HarmonyXModule`（优先级 `-999999` 的 Preload 核心模块），DCCM 将 HarmonyX 的 `PatchManager.ResolvePatcher` 事件桥接到 `HashlinkFunctionPatcher`。对于标记了 `[HashlinkFIndex]` 的代理类型，可直接使用标准 `[HarmonyPatch]` 属性编写 Hook，无需学习 DCCM 的委托约定。
 
-:::info 参考链接
+:::info
 
 - **HarmonyX GitHub**: [github.com/BepInEx/HarmonyX](https://github.com/BepInEx/HarmonyX) — HarmonyX 是 MonoMod 生态中 [Harmony](https://github.com/pardeike/Harmony) 的改进分支，由 BepInEx 团队维护。
 - **Harmony 官方文档**: [harmony.pardeike.net](https://harmony.pardeike.net/articles/intro.html) — HarmonyX 与 Harmony API 兼容，可直接参考 Harmony 官方文档中的 Patch 编写指南。

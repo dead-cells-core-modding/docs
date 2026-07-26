@@ -132,7 +132,7 @@ On first upload, DCCMTool's behavior:
 5. Uploads the entire contents of the mod directory
 6. Outputs the Workshop entry link in the format `https://steamcommunity.com/sharedfiles/filedetails/?id=XXXXXX`
 
-:::info The dccm_modname Tag Mechanism
+:::info
 
 During upload, DCCM injects a hidden `dccm_modname` key-value tag into each Workshop entry, with the value being the mod's `name` field. Subsequent uploads match existing entries via this tag, enabling automatic "first vs. update" detection. This tag is not visible to regular players.
 
@@ -188,7 +188,7 @@ When `-t` is not specified, the tool auto-generates update text in the `Update t
 
 When your mod depends on other mods already published on the Workshop, you need to use `steam mount` to mount them locally. MDK can only resolve dependencies from the local `coremod/mods/` directory during compilation and cannot directly load Workshop mods.
 
-:::info Typical Scenario
+:::info
 
 Suppose your mod declares a dependency in `.csproj`:
 
@@ -235,7 +235,7 @@ DCCMTool steam mount -n LibraryMod -a false
 3. If the mod is not installed and `-a` is `true` (default), automatically subscribes and downloads
 4. Creates a symbolic link at `{game directory}\coremod\mods\{mod name}` pointing to the Workshop install path
 
-:::warning Permission Requirements
+:::warning
 
 `steam mount` creates directory symbolic links via `Directory.CreateSymbolicLink`. On Windows, creating symbolic links requires one of the following:
 
@@ -249,13 +249,13 @@ If you lack the necessary permissions, the command will fail. On Linux, no addit
 
 After mounting, MDK's dependency resolver (`DependenciesResolver`) can find the mod's `modinfo.json` and DLL under `coremod/mods/`, allowing compilation to proceed. The symbolic link automatically follows Workshop updates.
 
-:::warning Difference Between the Two Commands
+:::warning
 
 `steam upload` is for **publishing** your mod to the Workshop. `steam mount` is for mounting Workshop dependency mods locally during **compile time**. When running the game, Steam users automatically get subscribed mods through DCCM's Workshop loader; manual mounting is not needed.
 
 :::
 
-:::warning Same-Name Mod Conflicts
+:::warning
 
 If a mod with the **same name** (matching the `name` field in `modinfo.json`) already exists under the local `coremod/mods/` directory, the **local version takes priority**. ModLoader scans the local directory first, then the Workshop path; same-name Workshop mods are skipped with a warning log. Be aware of this behavior during development and debugging to avoid an outdated local version overriding a Workshop update.
 

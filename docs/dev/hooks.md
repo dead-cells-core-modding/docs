@@ -166,7 +166,7 @@ handle.Enable();
 
 DCCM has built-in support for [HarmonyX](https://github.com/BepInEx/HarmonyX) (a Harmony fork in the MonoMod ecosystem). Through `HarmonyXModule` (a Preload core module with priority `-999999`), DCCM bridges HarmonyX's `PatchManager.ResolvePatcher` event to `HashlinkFunctionPatcher`. For proxy types marked with `[HashlinkFIndex]`, you can directly use standard `[HarmonyPatch]` attributes to write Hooks without learning DCCM's delegate conventions.
 
-:::info Reference Links
+:::info
 
 - **HarmonyX GitHub**: [github.com/BepInEx/HarmonyX](https://github.com/BepInEx/HarmonyX) — HarmonyX is an improved fork of [Harmony](https://github.com/pardeike/Harmony) in the MonoMod ecosystem, maintained by the BepInEx team.
 - **Harmony Official Documentation**: [harmony.pardeike.net](https://harmony.pardeike.net/articles/intro.html) — HarmonyX is API-compatible with Harmony; you can directly reference the Harmony official documentation for Patch writing guides.

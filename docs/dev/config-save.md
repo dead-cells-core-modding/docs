@@ -61,8 +61,10 @@ Modify `SerializerOptions` to adjust JSON output formatting (indentation is enab
 MyModConfig.Instance.SerializerOptions.Formatting = Formatting.None;
 ```
 
-:::tip External config libraries
+:::tip
+
 DCCM's `Config<T>` handles the mod's JSON config files. If you use another library's config system (e.g. `ConfigurationManager`), the two do not conflict; each manages its own files independently.
+
 :::
 
 ## SaveData\<T\>

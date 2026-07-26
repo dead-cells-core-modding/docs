@@ -52,7 +52,7 @@ SampleHook
 
 将 Mod 文件夹复制到 **Mods 目录** 下。
 
-:::warning 文件夹命名规则
+:::warning
 
 **文件夹名必须与 `modinfo.json` 中的 `name` 字段完全一致**（区分大小写和空格），否则加载器将无法正确识别该 Mod。
 
@@ -92,10 +92,3 @@ ModLoader 按以下顺序扫描 Mods：
 2. **Steam 创意工坊 Mods**：`DCCM_EXTRA_MODS_PATHS` 环境变量指向的 Workshop 路径（由 SteamStartShell 写入）
 
 当本地 Mod 与 Workshop Mod **同名**（`modinfo.json` 中 `name` 相同）时，**本地版本优先**——先扫描到的本地 Mod 被加载后，后续遇到的同名 Workshop Mod 会被跳过并输出警告。
-
-:::info 仅 Steam 启动可用
-
-Steam 创意工坊 Mod 的自动发现依赖 SteamStartShell 写入的环境变量。直接通过 `DeadCellsModding.exe` 启动游戏时仅加载本地 Mods。
-
-:::
-

@@ -6,7 +6,7 @@ sidebar_position: 4
 
 本教程介绍如何将开发完成的 Mod 发布到 **Steam 创意工坊**（Steam Workshop），以及如何为非 Steam 用户提供手动分发。DCCMTool 内置了完整的创意工坊上传与挂载功能，无需额外配置 Steamworks SDK。
 
-:::warning 前置条件
+:::warning
 
 - 已完成 [第一个 Mod](/docs/dev/tutorial/first-mod) 教程，拥有可构建的 Mod 项目
 - 已安装 **Steam 客户端**，并以拥有 Dead Cells 的账号登录
@@ -132,7 +132,7 @@ DCCMTool steam upload -i "bin\Debug\net10.0\output" -p "Assets\my-preview.png"
 5. 上传 Mod 目录的全部内容
 6. 输出 Workshop 条目链接，格式为 `https://steamcommunity.com/sharedfiles/filedetails/?id=XXXXXX`
 
-:::info dccm_modname 标签机制
+:::info
 
 DCCM 在上传时会为每个 Workshop 条目注入一个隐藏的 `dccm_modname` 键值标签，值为 Mod 的 `name` 字段。后续上传时通过此标签匹配已有条目，实现自动识别"首次 vs 更新"。该标签对普通玩家不可见。
 
@@ -188,7 +188,7 @@ DCCM 不强制版本格式，但推荐遵循语义化版本规范。
 
 当你的 Mod 依赖了其他已发布到创意工坊的 Mod 时，需要使用 `steam mount` 将其挂载到本地。MDK 在编译时只能从本地 `coremod/mods/` 目录解析依赖，无法直接加载创意工坊中的 Mod。
 
-:::info 典型场景
+:::info
 
 假设你的 Mod 在 `.csproj` 中声明了依赖：
 
@@ -235,7 +235,7 @@ DCCMTool steam mount -n LibraryMod -a false
 3. 若 Mod 未安装且 `-a` 为 `true`（默认），自动订阅并下载
 4. 在 `{游戏目录}\coremod\mods\{Mod名称}` 创建符号链接指向 Workshop 安装路径
 
-:::warning 权限要求
+:::warning
 
 `steam mount` 通过 `Directory.CreateSymbolicLink` 创建目录符号链接。在 Windows 上，创建符号链接需要以下条件之一：
 
@@ -249,13 +249,13 @@ DCCMTool steam mount -n LibraryMod -a false
 
 挂载后，MDK 的依赖解析器（`DependenciesResolver`）即可在 `coremod/mods/` 下找到该 Mod 的 `modinfo.json` 和 DLL，完成编译。符号链接会自动跟随 Workshop 更新。
 
-:::warning 两种命令的区别
+:::warning
 
 `steam upload` 用于**发布**你的 Mod 到创意工坊，`steam mount` 用于**编译时**将创意工坊中的依赖 Mod 挂载到本地。运行游戏时，Steam 用户通过 DCCM 的 Workshop 加载器自动获取已订阅 Mod，无需手动挂载。
 
 :::
 
-:::warning 同名 Mod 冲突
+:::warning
 
 如果本地 `coremod/mods/` 下已存在与 Workshop Mod **同名**（`modinfo.json` 中 `name` 字段相同）的 Mod，**本地版本优先**。ModLoader 先扫描本地目录后扫描 Workshop 路径，同名 Workshop Mod 会被跳过并输出警告日志。在开发调试时应注意此行为，避免因本地旧版本覆盖 Workshop 新版本。
 
