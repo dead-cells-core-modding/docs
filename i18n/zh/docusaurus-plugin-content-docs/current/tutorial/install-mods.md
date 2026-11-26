@@ -89,6 +89,6 @@ SampleHook
 ModLoader 按以下顺序扫描 Mods：
 
 1. **本地 Mods**：`coremod/mods/` 下的所有子文件夹
-2. **Steam 创意工坊 Mods**：`DCCM_EXTRA_MODS_PATHS` 环境变量指向的 Workshop 路径（由 SteamStartShell 写入）
+2. **Steam 创意工坊 Mods**：`DCCM_EXTRA_MODS_PATHS` 环境变量指向的 Workshop 路径（由 SteamLauncher 写入）
 
 当本地 Mod 与 Workshop Mod **同名**（`modinfo.json` 中 `name` 相同）时，**本地版本优先**——先扫描到的本地 Mod 被加载后，后续遇到的同名 Workshop Mod 会被跳过并输出警告。

@@ -11,7 +11,7 @@ Dead Cells Core Modding（简称 DCCM ）是一个非官方的Mod框架，旨在
 :::tip
 
 对于 **Steam** 平台用户，可以 [通过创意工坊安装 DCCM](./tutorial/install-workshop.md) 。
-对于  **GOG**  平台用户，可以 [通过手动安装 DCCM](./tutorialinstall-core.md)。
+对于  **GOG**  平台用户，可以 [通过手动安装 DCCM](./tutorial/install-core.md)。
 
 加入 [Discord 服务器](https://discord.gg/7vp38qsYc4) 获取更多帮助。
 

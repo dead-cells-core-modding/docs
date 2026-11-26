@@ -22,10 +22,10 @@ The `[Event]` attribute supports one optional parameter:
 
 | Interface Name | Trigger Timing | Source File |
 | --- | --- | --- |
-| `IOnCoreModuleInitializing` | During Core initialization, before loading preload modules | `IOnCoreModuleInitializing.cs` |
-| `IOnAdvancedModuleInitializing` | Advanced module initialization phase | `IOnAdvancedModuleInitializing.cs` |
-| `IOnPluginInitializing` | When a single plugin begins initialization | `IOnPluginInitializing.cs` |
-| `IOnPluginInitialized` | When all plugins finish initialization | `IOnPluginInitialized.cs` |
+| `IOnCoreModuleInitializing` | After all Preload core modules have been instantiated | `IOnCoreModuleInitializing.cs` |
+| `IOnAdvancedModuleInitializing` | After Normal core modules are loaded (during Haxe proxy initialization) | `IOnAdvancedModuleInitializing.cs` |
+| `IOnPluginInitializing` | When plugins begin initialization (broadcast once after all plugins are instantiated) | `IOnPluginInitializing.cs` |
+| `IOnPluginInitialized` | Declared but currently not broadcast by the framework | `IOnPluginInitialized.cs` |
 | `IOnSaveConfig` | When config file is saved | `IOnSaveConfig.cs` |
 
 ### Resource Loading
@@ -33,6 +33,8 @@ The `[Event]` attribute supports one optional parameter:
 | Interface Name | Trigger Timing | Source File |
 | --- | --- | --- |
 | `IOnAfterLoadingAssets` | After game assets are loaded; custom res.pak can be loaded here | `IOnAfterLoadingAssets.cs` |
+| `IOnLoadedPak` | After a `.pak` file is loaded; parameter is the pak path | `Game/IOnLoadedPak.cs` |
+| `IOnUpdatedPakRecord` | After a pak record is added; parameter is the record path | `Game/IOnUpdatedPakRecord.cs` |
 | `IOnAfterLoadingCDB` | After CDB data is loaded; parameter is `_Data_ cdb` | `Game/IOnAfterLoadingCDB.cs` |
 | `IOnLoadingLanguage` | When loading language; parameter is language code `string lang` | `Game/IOnLoadingLanguage.cs` |
 

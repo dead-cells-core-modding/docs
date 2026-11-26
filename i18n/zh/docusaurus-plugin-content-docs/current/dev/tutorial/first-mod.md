@@ -13,7 +13,7 @@ sidebar_position: 2
 本教程假设你已具备：
 
 - C# 编程基础
-- 已安装 [MDK](/docs/dev/tutorial/install-mdk)
+- 已安装 [MDK](./install-mdk.md)
 
 :::
 
@@ -26,8 +26,8 @@ sidebar_position: 2
 打开命令行，执行以下步骤：
 
 ```bash
-# 创建 net10.0 类库项目
-dotnet new classlib -n SimpleMod -f net10.0
+# 创建 net11.0 类库项目
+dotnet new classlib -n SimpleMod -f net11.0
 
 # 进入项目目录
 cd SimpleMod
@@ -45,7 +45,7 @@ dotnet add package DeadCellsCoreModding.MDK
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -84,16 +84,20 @@ MDK 会在构建时根据 csproj 配置**自动生成** `modinfo.json`。你无�
   "name": "Simple",
   "version": "1.0.0",
   "type": "mod",
+  "main": "SampleSimple.SimpleMod",
+  "assemblies": ["SampleSimple.dll"],
   "dependencies": [],
-  "dccmversion": "1.0.0"
+  "dccmversion": "35.16.1"
 }
 ```
 
 | 字段 | 含义 |
 | ------ | ------ |
 | `name` | Mod 名称，必须与输出文件夹名一致 |
-| `version` | Mod 版本号 |
+| `version` | Mod 版本号（来自 `<Version>` 属性） |
 | `type` | 类型，对应 `ModType` |
+| `main` | 入口类的完全限定名，对应 `ModMain` |
+| `assemblies` | 从 Mod 目录加载的 DLL 文件名列表 |
 | `dependencies` | 依赖的其他 Mod 名称列表 |
 | `dccmversion` | 构建时使用的 DCCM 版本 |
 
@@ -262,7 +266,7 @@ namespace SampleSimple
 dotnet build
 ```
 
-构建成功后，产物位于 `bin\Debug\net10.0\output`。如果启用了 `AutoInstallMod`，Mod 会被自动安装到游戏 Mod 目录。
+构建成功后，产物位于 `bin\Debug\net11.0\output`。如果启用了 `AutoInstallMod`，Mod 会被自动安装到游戏 Mod 目录。
 
 通过 `DeadCellsModding.exe` 启动游戏，检查日志确认 Mod 加载：
 
@@ -275,8 +279,8 @@ dotnet build
 
 ### 构建失败
 
-- 确认已安装 [.NET 10 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0)
-- 确认 MDK NuGet 源已配置（参考[安装 MDK](/docs/dev/tutorial/install-mdk)）
+- 确认已安装 [.NET 11 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/11.0)
+- 确认 MDK NuGet 源已配置（参考[安装 MDK](./install-mdk.md)）
 - 尝试清理后重新构建：
 
 ```bash

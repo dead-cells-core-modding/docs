@@ -27,7 +27,7 @@ sidebar_position: 0
 
 ## 一.准备工作
 ### 1.创建 `dccm` 模组
-[点击查看教程](i18n/zh/docusaurus-plugin-content-docs/current/dev/tutorial/first-mod.md)
+[点击查看教程](../first-mod.md)
 ```csharp
 using ModCore.Events.Interfaces.Game;
 using ModCore.Mods;
@@ -117,11 +117,11 @@ public class Out_Clock
 
 ![struct](./level/strct-2.png)
 
-```bash
+```xml
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+  <PropertyGroup>
 
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ModType>mod</ModType>
@@ -132,8 +132,7 @@ public class Out_Clock
 
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.6.2" />
-    <PackageReference Include="DeadCellsCoreModding.MDK" Version="1.0.1" />
+    <PackageReference Include="DeadCellsCoreModding.MDK" Version="1.0.1" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -161,7 +160,7 @@ using dc.tool.mod;
 using ModCore.Events.Interfaces.Game;
 using ModCore.Mods;
 using ModCore.Modules;
-using ModCore.Utitities;
+using ModCore.Utilities;
 
 namespace Outside_Clock
 {
@@ -186,12 +185,10 @@ namespace Outside_Clock
         {
             var res = Info.ModRoot!.GetFilePath("Kaguya.pak");
             FsPak.Instance.FileSystem.loadPak(res.AsHaxeString());
-            var json = CDBManager.Class.instance.getAlteredCDB();
-            dc.Data.Class.loadJson(
-               json,
-               default);
-        }
-    }
+            var json = CDBManager.Instance.GetAlteredCDB();
+            dc.Data.Class.loadJson(json.AsHaxeString(), default);
+        }
+    }
 }
 ```
 
@@ -201,11 +198,9 @@ void IOnGameEndInit.OnGameEndInit()
         {
             var res = Info.ModRoot!.GetFilePath("Kaguya.pak");
             FsPak.Instance.FileSystem.loadPak(res.AsHaxeString());
-            var json = CDBManager.Class.instance.getAlteredCDB();
-            dc.Data.Class.loadJson(
-               json,
-               default);
-        }
+            var json = CDBManager.Instance.GetAlteredCDB();
+            dc.Data.Class.loadJson(json.AsHaxeString(), default);
+        }
 ```
 这样你的 `pak` 就被读取了.
 :::
@@ -222,7 +217,7 @@ function buildMainRooms() {
         .chain(Struct.createExit("PrisonRoof"));
 }
 ```
-[具体教程]([死亡细胞模组制作教程 第四部分（Script模组） - 哔哩哔哩](https://www.bilibili.com/opus/684984246732849152))
+[具体教程](https://www.bilibili.com/opus/684984246732849152)
 ### 至此准备工作结束 
 
 ## 二.构建关卡结构

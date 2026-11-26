@@ -69,28 +69,38 @@ DCCM's `Config<T>` handles the mod's JSON config files. If you use another libra
 
 ## SaveData\<T\>
 
-`SaveData<T>` binds data to the game save file. Data is automatically restored when loading a save and automatically written when saving the game. Data is embedded in the save file as JSON.
+`SaveData<T>` binds data to a game save. Data is automatically restored when loading a save and automatically written when saving the game. It is stored as JSON in a sidecar `.modded.json` file next to the game's save file.
 
 ### SaveData Declaration
 
-Operate via the `Value` property, just like Config:
+Declare a static `SaveData<T>` instance (the name should be unique), then operate via the `Value` property, just like Config:
 
 ```csharp
+using ModCore.Storage;
+
+public class MySave
+{
+    public static SaveData<MySave> Save { get; } = new("MyMod");
+
+    public int Coins { get; set; }
+    public List<string> UnlockedItems { get; set; } = [];
+}
+
 // Modify data
-MyMod.Save.Value.Coins += 100;
-MyMod.Save.Value.UnlockedItems.Add("SomeWeapon");
+MySave.Save.Value.Coins += 100;
+MySave.Save.Value.UnlockedItems.Add("SomeWeapon");
 
 // Read data
-int coins = MyMod.Save.Value.Coins;
+int coins = MySave.Save.Value.Coins;
 ```
 
-Data is automatically written on save and restored on load. Developers only need to work with `Value`; no need to worry about persistence details.
+Data is restored on load and written after the game saves. The sidecar file is also copied/deleted together with its save. Developers only need to work with `Value`; no need to worry about persistence details.
 
 ### Differences from Config
 
 | | Config\<T\> | SaveData\<T\> |
 | --- | --- | --- |
-| Storage location | `config/{name}.json` | Embedded in game save file |
+| Storage location | `config/{name}.json` | Sidecar `*.modded.json` next to the game save |
 | Lifecycle | Mod level, shared across saves | Save level, independent per save |
 | Use case | Mod settings (keybindings, toggles) | Progression data that varies per save |
 | T constraint | `new()` | `class, new()` |

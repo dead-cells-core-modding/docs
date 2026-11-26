@@ -91,7 +91,7 @@ public override void Initialize()
 }
 ```
 
-Here, the third parameter `enableByDefault` of `CreateHook` defaults to `true`, so `.Enable()` can be omitted, but calling it explicitly is clearer.
+Here, the `enableByDefault` parameter of `CreateHook` defaults to `true`, so `.Enable()` can be omitted, but calling it explicitly is clearer.
 
 ### Example: Modifying Before-and-After Logic
 

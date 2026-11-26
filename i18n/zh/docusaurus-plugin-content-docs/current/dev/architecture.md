@@ -14,8 +14,8 @@ flowchart TD
     B --> C[Startup.StartGame]
     C --> D[Core.Initialize]
     D --> E[加载 Preload CoreModule]
-    D --> F[广播 IOnCoreModuleInitializing]
-    E --> G[加载 hlboot.dat 字节码]
+    E --> F[广播 IOnCoreModuleInitializing]
+    F --> G[加载 hlboot.dat 字节码]
     G --> H[Native.InitializeGame]
     H --> I[Hashlink VM 启动]
     I --> J[广播生命周期事件]
@@ -25,12 +25,12 @@ flowchart TD
 
 `Core.Initialize()` 是框架初始化的核心，依次完成：
 
-1. 注册程序集解析钩子（`AssemblyResolve`、`TypeResolve`），使框架能从 `coremod/plugins/` 和 `coremod/mods/` 目录动态加载程序集。
+1. 注册程序集解析钩子（`AssemblyResolve`），使框架能从框架目录和 `coremod/plugins/` 解析缺失的程序集。模组程序集则由 `ModLoader` 从 `coremod/mods/` 单独加载。
 2. 初始化原生运行时（`InitializeNative`），记录运行时版本、平台信息。
 3. 加载所有标记为 `CoreModuleKind.Preload` 的核心模块，这些模块在游戏启动前完成必要的基础设施准备（如存储系统、Hook 管理器）。
 4. 广播 `IOnCoreModuleInitializing` 事件，通知所有已注册接收者核心模块已就绪。
 
-之后，框架加载 `hlboot.dat`（预编译的游戏引导字节码），调用 `Native.InitializeGame()` 启动 Hashlink 虚拟机。游戏窗口创建后，框架依次广播 `IOnBeforeGameInit`、`IOnGameInit` 等生命周期事件。
+之后，框架加载 `hlboot.dat`（预编译的游戏引导字节码），调用 `Native.InitializeGame()` 启动 Hashlink 虚拟机。`IOnBeforeGameInit` 在 Haxe 主入口执行时广播，`IOnGameInit` 在游戏窗口创建后广播，随后依次触发其余生命周期事件。
 
 ## 双层模块系统
 
@@ -138,17 +138,25 @@ DCCM 仓库的核心目录如下：
 ```text
 DeadCellsCoreModding/
 ├── sources/          # 主 C# 解决方案
-│   ├── ModCore/              # 核心模组框架
-│   ├── ModCore.Common/       # 共享工具（EventSystem 等）
-│   ├── ModCore.Game/         # 游戏集成层
-│   ├── ModCore.Native/       # 原生互操作（P/Invoke、TCC JIT）
-│   ├── DCCMShell/            # 启动桥接 DLL
-│   ├── DeadCellsModding/     # NativeAOT 启动器
-│   └── HashlinkSharp/        # Hashlink VM 的 C# 封装
-├── mdk/              # 模组开发工具链（MSBuild 目标、代理程序集）
-├── sample/           # 示例模组（SimpleMod、SampleWeapon 等）
+│   ├── ModCore/                    # 核心模组框架
+│   ├── ModCore.Common/             # 共享工具（EventSystem、FolderInfo 等）
+│   ├── ModCore.Native/             # 原生互操作（P/Invoke、TCC JIT）
+│   ├── ModCore.ModLoader.Default/  # 默认模组加载器插件
+│   ├── HaxeProxy/                  # Haxe 代理运行时与生成的代理类型
+│   ├── HashlinkSharp/              # Hashlink VM 的 C# 封装
+│   ├── HashlinkNET.Compiler/       # Haxe 字节码 -> .NET 编译器（GameProxy）
+│   ├── HashlinkNET.Bytecode/       # Hashlink 字节码读取器
+│   ├── DCCMShell/                  # 启动桥接 DLL
+│   ├── DeadCellsModding/           # NativeAOT 启动器
+│   ├── GOGStartShell/              # GOG 启动壳
+│   ├── SteamStartShell/            # Steam 创意工坊引导启动器
+│   └── SteamLauncher/              # Steam 创意工坊管理与游戏启动器
+├── mdk/              # 模组开发工具链（MSBuild 目标、DCCMTool）
+├── sample/           # 示例模组（SampleSimple、SampleWeapon 等）
 ├── test/             # 集成测试（xUnit v3，需 Hashlink VM）
+├── tools/            # 代理/文档生成工具
 ├── hlboots/          # 预编译游戏引导字节码
+├── workshop-publish/ # 打包后的创意工坊分发内容
 └── build/            # NUKE 构建自动化
 ```
 
@@ -160,4 +168,7 @@ DeadCellsCoreModding/
 | `Modules/` | 核心模块实现（Game、ModLoader、HashlinkHooks 等） |
 | `Hooks/` | Hashlink 函数 Hook 管理器 |
 | `Mods/` | ModBase、ModInfo 等模组基础设施 |
+| `Plugins/` | PluginBase、PluginAttribute |
+| `Serialization/` | Hxbit 序列化桥接 |
 | `Storage/` | Config、SaveData 等持久化工具 |
+| `Utilities/` | 字符串、数组、颜色与资源辅助工具 |

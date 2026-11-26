@@ -16,8 +16,8 @@ sidebar_position: 1
 
 ## 先决条件
 
-- **.NET 10 运行时** ([下载地址](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0))
-  - 如果你打算开发用于 **DCCM** 的 **Mods** ， 请安装 **.NET 10 SDK**。
+- **.NET 11 运行时** ([下载地址](https://dotnet.microsoft.com/zh-cn/download/dotnet/11.0))
+  - 如果你打算开发用于 **DCCM** 的 **Mods** ， 请安装 **.NET 11 SDK**。
 - **Microsoft Visual C++ 可再发行组件包 (2015-2022)**（[下载地址](https://aka.ms/vs/17/release/vc_redist.x64.exe)）
 
 ## 安装

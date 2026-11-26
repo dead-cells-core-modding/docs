@@ -11,13 +11,13 @@ You should have:
 
 ---
 
-# Step 1: Find the Cutscene You Want to Modify
+## Step 1: Find the Cutscene You Want to Modify
 The `cine` folder contains all in-game cutscenes.
 ![](./img/cm/cm1.png)
 
 ---
 
-# Step 2: Analyze the Code
+## Step 2: Analyze the Code
 ### Example: Hand of the King Meeting the King
 First, examine the main class of the function.
 
@@ -26,7 +26,7 @@ First, examine the main class of the function.
 We can see that the boss's movement can be modified in `update`.
 ![](./img/cm/cm2.png)
 
-## Examine the Static Class
+### Examine the Static Class
 This is the class that actually plays the cutscene. Don't be intimidated by all the methods.
 ![](./img/cm/cm3.png)
 
@@ -36,8 +36,8 @@ Focus on this static method, it's the core of cutscene playback:
 
 ---
 
-# Step 3: Write the Code
-## Hooking
+## Step 3: Write the Code
+### Hooking
 Add the following two hooks in the `Initialize()` method:
 The first hooks the main class's `update` method
 ```csharp
@@ -48,7 +48,7 @@ The second hooks the static class's static method
 Hook__EnterThroneRoomAsKing.__constructor__ += Hook__EnterThroneRoomAsKing__constructor__; // static class
 ```
 
-## Overriding the Original Cutscene
+#### Overriding the Original Cutscene
 `self.cm = new Cinematic((int)self.tmod);` overrides the original static function's cutscene logic.
 ```csharp
     private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing.orig_update orig, EnterThroneRoomAsKing self)
@@ -72,7 +72,7 @@ From here you can:
 
 ---
 
-# Simple Example
+## Simple Example
 
 ### Hand of the King Flees Upon Seeing the King
 
@@ -107,12 +107,12 @@ private void Hook_EnterThroneRoomAsKing_update(Hook_EnterThroneRoomAsKing_orig_u
 :::warning
  **You must create a new Cinematic instance** — if you don't explicitly create a new `Cinematic` object, the game engine will execute the default original cutscene logic.
 :::
-# Here's What It Looks Like
+## Here's What It Looks Like
 
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115627398269311&bvid=BV1iCSEBzEQn&cid=34337590920&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
 
-## Final Code
+### Final Code
 
 ---
 ![](./img/cm/cm.png)

@@ -8,7 +8,7 @@ The `GetText` module loads a mod's `.mo` translation files and merges them into 
 
 ## Overview
 
-The game uses the GNU gettext `.mo` binary format to store translation text. DCCM intercepts the game's `.mo` loading process, and on each language switch, loads registered mods' translation files in priority order, merging them into the game's global `texts` table. Developers simply call `GetText.Instance.GetString("key")` to retrieve the translated string for the current language.
+The game uses the GNU gettext `.mo` binary format to store translation text. DCCM intercepts the game's `.mo` loading process, and on each language switch, loads registered mods' translation files in registration order, merging them into the game's global `texts` table. Developers simply call `GetText.Instance.GetString("key")` to retrieve the translated string for the current language.
 
 :::info
 `GetText` is a CoreModule with priority `ModulePriorities.Game`. It completes its own initialization during the `IOnAdvancedModuleInitializing` stage and registers the `dccm-core` namespace.
@@ -81,6 +81,8 @@ string GetString(string key)
 string GetString(string key, IDictionary<string, string> @params)
 ```
 
+For the overload with parameters, placeholders in the translation text use the `::name::` syntax (for example `::player::`). Each key in the dictionary replaces the matching `::key::` token.
+
 Projects commonly wrap a short helper method to simplify calls:
 
 ```csharp
@@ -112,7 +114,7 @@ var text = GetText.Instance.GetString("welcome_message",
 Summary of the complete steps from creating translations to runtime usage:
 
 1. **Create `.mo` file**: Use `msgfmt` or a PO editing tool (e.g. Poedit) to compile `.po` into `.mo`, following the path conventions (e.g. `DeadCellsMultiplayerX/lang/main.zh.mo`)
-2. **Pack**: Include `.mo` files in `res.pak` via `PackAssets` in `.csproj`. See [Asset Packaging](../resources.md#packaging-resources)
+2. **Pack**: Include `.mo` files in `res.pak` via `PackAssets` in `.csproj`. See [Asset Packaging](../resources#packaging-resources)
 3. **Load**: Implement `IOnAfterLoadingAssets` and call `FsPak.Instance.FileSystem.loadPak()` to load `res.pak`
 4. **Register**: Call `GetText.Instance.RegisterMod("namespace")` in `Initialize()`
 5. **Use**: Retrieve translated strings via `GetText.Instance.GetString("key")`

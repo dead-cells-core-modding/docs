@@ -8,15 +8,15 @@ sidebar_position: 1
 
 :::tip
 
-Join the [Discord server](https://discord.gg/Z7zzVafaP3) for more help.
+Join the [Discord server](https://discord.gg/7vp38qsYc4) for more help.
 
 :::
 
 ## Prerequisites
 
-- **.NET 10 SDK** ([Download](https://dotnet.microsoft.com/download/dotnet/10.0))
+- **.NET 11 SDK** ([Download](https://dotnet.microsoft.com/download/dotnet/11.0))
   - (Optional) Visual Studio 2022
-- [DCCM Core Files](/docs/tutorial/install-core)
+- [DCCM Core Files](../../tutorial/install-core.md)
 
 ## Installation Steps
 

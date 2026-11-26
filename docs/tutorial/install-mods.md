@@ -89,6 +89,6 @@ You can check the DCCM version number in the bottom left corner of the game's ma
 The ModLoader scans Mods in the following order:
 
 1. **Local Mods**: all subfolders under `coremod/mods/`
-2. **Steam Workshop Mods**: the Workshop path pointed to by the `DCCM_EXTRA_MODS_PATHS` environment variable (written by SteamStartShell)
+2. **Steam Workshop Mods**: the Workshop paths pointed to by the `DCCM_EXTRA_MODS_PATHS` environment variable (written by SteamLauncher)
 
 When a local Mod and a Workshop Mod share the **same name** (same `name` in `modinfo.json`), the **local version takes priority**. Once a local Mod scanned first is loaded, subsequent Workshop Mods with the same name encountered later will be skipped with a warning.

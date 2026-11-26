@@ -8,7 +8,7 @@ sidebar_position: 7
 
 ## 概述
 
-游戏使用 GNU gettext 的 `.mo` 二进制格式存储翻译文本。DCCM 拦截游戏加载 `.mo` 的流程，在每次语言切换时将已注册模组的翻译文件按优先级顺序载入，合并到游戏全局的 `texts` 表中。开发者只需调用 `GetText.Instance.GetString("key")` 即可获取当前语言的翻译字符串。
+游戏使用 GNU gettext 的 `.mo` 二进制格式存储翻译文本。DCCM 拦截游戏加载 `.mo` 的流程，在每次语言切换时将已注册模组的翻译文件按注册顺序载入，合并到游戏全局的 `texts` 表中。开发者只需调用 `GetText.Instance.GetString("key")` 即可获取当前语言的翻译字符串。
 
 :::info
 `GetText` 是 CoreModule，优先级为 `ModulePriorities.Game`，在 `IOnAdvancedModuleInitializing` 阶段完成自身初始化并注册 `dccm-core` 命名空间。
@@ -80,6 +80,8 @@ string GetString(string key)
 // 带参数格式化的翻译
 string GetString(string key, IDictionary<string, string> @params)
 ```
+
+带参数的版本中，翻译文本里的占位符使用 `::name::` 语法（例如 `::player::`），字典中的每个键会替换对应的 `::key::` 片段。
 
 项目中常封装一个简短的辅助方法以简化调用：
 

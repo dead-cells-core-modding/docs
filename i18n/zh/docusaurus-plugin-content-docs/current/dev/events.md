@@ -22,10 +22,10 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 
 | 接口名 | 触发时机 | 所在文件 |
 | --- | --- | --- |
-| `IOnCoreModuleInitializing` | Core 初始化，加载预加载模块前 | `IOnCoreModuleInitializing.cs` |
-| `IOnAdvancedModuleInitializing` | 高级模块初始化阶段 | `IOnAdvancedModuleInitializing.cs` |
-| `IOnPluginInitializing` | 单个插件开始初始化时 | `IOnPluginInitializing.cs` |
-| `IOnPluginInitialized` | 所有插件初始化完成时 | `IOnPluginInitialized.cs` |
+| `IOnCoreModuleInitializing` | 所有 Preload 核心模块实例化完成后 | `IOnCoreModuleInitializing.cs` |
+| `IOnAdvancedModuleInitializing` | Normal 核心模块加载完成后（Haxe 代理初始化期间） | `IOnAdvancedModuleInitializing.cs` |
+| `IOnPluginInitializing` | 插件开始初始化时（所有插件实例化后广播一次） | `IOnPluginInitializing.cs` |
+| `IOnPluginInitialized` | 已声明，但目前框架不会广播该事件 | `IOnPluginInitialized.cs` |
 | `IOnSaveConfig` | 配置文件保存时 | `IOnSaveConfig.cs` |
 
 ### 资源加载
@@ -33,6 +33,8 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 | 接口名 | 触发时机 | 所在文件 |
 | --- | --- | --- |
 | `IOnAfterLoadingAssets` | 游戏资源加载完成后，可在此加载自定义 res.pak | `IOnAfterLoadingAssets.cs` |
+| `IOnLoadedPak` | 加载 `.pak` 文件后，参数为 pak 路径 | `Game/IOnLoadedPak.cs` |
+| `IOnUpdatedPakRecord` | 添加 pak 记录后，参数为记录路径 | `Game/IOnUpdatedPakRecord.cs` |
 | `IOnAfterLoadingCDB` | CDB 数据加载完成后，参数为 `_Data_ cdb` | `Game/IOnAfterLoadingCDB.cs` |
 | `IOnLoadingLanguage` | 加载语言时，参数为语言代码 `string lang` | `Game/IOnLoadingLanguage.cs` |
 

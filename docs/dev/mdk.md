@@ -21,7 +21,7 @@ After installing DCCM, run the MDK installation script:
 <game directory>/coremod/core/mdk/install-linux.sh
 ```
 
-The script registers the `DCCM_MDK_ROOT` environment variable via DCCMTool, enabling MSBuild to locate MDK build files.
+The script runs DCCMTool's `install-mdk` command, which registers the `DCCM_MDK_ROOT`, `DEAD_CELLS_GAME_PATH`, and `DCCM_MDK_BIN_ROOT` environment variables and adds the MDK `packages/` folder as the `DeadCoreModdingMDK` NuGet source.
 
 ## Project Reference
 
@@ -40,8 +40,8 @@ Configure the following properties in the `.csproj` `<PropertyGroup>`:
 | Property | Required | Description |
 | ------ | :--: | ------ |
 | `ModName` | No | Mod name, defaults to `$(AssemblyName)`. Must match the `name` field in `modinfo.json` |
-| `ModType` | Yes | Mod type: `mod` (regular mod) or `library` (library) |
-| `ModMain` | Yes | Fully qualified name of the mod entry class, e.g. `MyMod.MainClass` |
+| `ModType` | Yes | Mod type: `mod` (regular mod), `library` (library), `plugin` (core plugin), or `default` |
+| `ModMain` | Conditional | Fully qualified name of the mod entry class, e.g. `MyMod.MainClass`. Required for `mod`; omitted for `library`/`plugin` |
 | `AutoInstallMod` | No | When set to `true`, automatically copies output to `coremod/mods/` after build |
 | `GenerateSinglePakFile` | No | When set to `true`, merges all `PackAssets` into a single `res.pak` |
 | `GenerateDiffCDB` | No | When set to `true`, generates a CastleDB diff patch. **`GameVersion` must also be specified** |
@@ -50,6 +50,11 @@ Configure the following properties in the `.csproj` `<PropertyGroup>`:
 | `Preview` | No | Path to the mod preview image (`.png`/`.jpg`/`.gif`), defaults to `preview.png` in the project directory |
 | `ModTag` | No | Mod tag, written to the `tags` field in `modinfo.json` |
 | `RepositoryUrl` | No | Mod repository URL, written to `modinfo.json` |
+| `GenerateModInfo` | No | When `true` (default), generates/merges `modinfo.json` from MSBuild properties |
+| `MDKOutputPath` | No | Output root, defaults to `$(OutputPath)output`; the mod is placed under `$(MDKOutputPath)/$(ModName)/` |
+| `OutputPakName` | No | File name of the merged pak, defaults to `res.pak` |
+| `CdbFile` | No | Path to the mod's CastleDB, defaults to `data.cdb` in the project directory |
+| `TemplateCdbFile` | No | Overrides the template CDB path (otherwise `databases/v$(GameVersion)/data.cdb`) |
 | `ModDependency` | No | Names of dependent mods (`<ModDependency Include="ModName" />`) |
 
 ## Resource Packaging Items
@@ -80,8 +85,8 @@ During `dotnet build`, MDK executes in the following order:
 3. **Package resources** — DCCMTool packages `PackAssets` into intermediate `.pak` files
 4. **Generate CDB patch** (when `GenerateDiffCDB=true`) — DCCMTool compares
    `data.cdb` against the `v$(GameVersion)` template, generating a diff `.pak`
-5. **Merge PAK** — Merge intermediate `.pak` files into `res.pak`
-6. **Output** — Copy DLL, `res.pak`, and preview image to `$(OutputPath)/output/$(ModName)/`
+5. **Merge PAK** — Merge intermediate `.pak` files into `$(OutputPakName)` (default `res.pak`)
+6. **Output** — Copy DLL, pak, and preview image to `$(MDKOutputPath)/$(ModName)/`
 7. **Auto-install** (when `AutoInstallMod=true`) — Copy to `coremod/mods/$(ModName)/`
 
 ## DCCMTool
@@ -97,9 +102,11 @@ The core command-line tool of MDK, providing the following mod development comma
 | `cdb diff -i mod.cdb -t template.cdb -o diff.pak` | Generate a CastleDB diff |
 | `steam upload` | Upload to Steam Workshop |
 | `steam mount` | Mount Workshop mods locally |
-| `atlas unpack -i atlas_file` | Unpack an atlas |
+| `atlas unpack -i atlas_file -o output_dir` | Unpack an atlas |
 | `atlas colorswap decode/encode` | Decode/encode palette |
-| `tmx collapse/expand` | TMX binary/XML conversion |
+| `tmx collapse -x input.tmx -b output.bin` | Convert TMX XML to binary |
+| `tmx expand -b input.bin -x output.tmx` | Convert binary TMX to XML |
+| `generate-game-persudo -i hlboot.dat -o output_dir` | Generate a GamePseudocode assembly manually |
 
 Direct invocation (in an MDK-installed environment):
 
@@ -170,13 +177,15 @@ Generated `modinfo.json` example:
     "version": "1.0.0",
     "type": "mod",
     "main": "MyMod.MainClass",
-    "dependencies": ["LibraryMod", "SomeLib"]
+    "assemblies": ["MyMod.dll"],
+    "dependencies": ["LibraryMod", "SomeLib"],
+    "dccmversion": "35.16.1"
 }
 ```
 
 ## Library Mods
 
-Dependent mods should be of `library` type (`<ModType>library</ModType>`). Library mods do not include `ModMain` and only provide reusable types and methods.
+Dependent mods should be of `library` type (`<ModType>library</ModType>`). Library (and `plugin`) mods do not emit a `main` field in `modinfo.json`; they only provide reusable types and methods.
 
 ## FAQ — Dependencies
 

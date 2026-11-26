@@ -16,7 +16,7 @@ sidebar_position: 100
 
 在开始之前，建议阅读 [wiki](https://github.com/HaxeFoundation/hashlink/wiki) 了解 **HashLink 虚拟机** 的基本信息。
 
-加入 [Discord 服务器](https://discord.gg/Z7zzVafaP3) 获取更多帮助。
+加入 [Discord 服务器](https://discord.gg/7vp38qsYc4) 获取更多帮助。
 
 :::
 

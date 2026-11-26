@@ -8,7 +8,7 @@ This tutorial covers how to publish a completed mod to the **Steam Workshop** an
 
 :::warning Prerequisites
 
-- Completed the [Creating Your First Mod](/docs/dev/tutorial/first-mod) tutorial and have a buildable mod project
+- Completed the [Creating Your First Mod](./first-mod.md) tutorial and have a buildable mod project
 - **Steam client** installed and logged in with an account that owns Dead Cells
 - The Steam client must remain running; DCCMTool communicates with the Workshop via the local Steam API
 
@@ -16,7 +16,7 @@ This tutorial covers how to publish a completed mod to the **Steam Workshop** an
 
 ## Preparing for Publication
 
-After building, the mod output is located in the project's `bin\Debug\net10.0\output` directory (see [Building and Testing](first-mod.md#building-and-testing)). Before publishing, make sure the metadata in `modinfo.json` is complete.
+After building, the mod output is located in the project's `bin\Debug\net11.0\output` directory (see [Building and Testing](first-mod.md#building-and-testing)). Before publishing, make sure the metadata in `modinfo.json` is complete.
 
 ### Key modinfo.json Fields
 
@@ -110,13 +110,13 @@ Parameter descriptions:
 
 ```bash
 # Upload to Workshop (default update text and auto-detected preview)
-DCCMTool steam upload -i "bin\Debug\net10.0\output"
+DCCMTool steam upload -i "bin\Debug\net11.0\output"
 
 # Upload with update notes
-DCCMTool steam upload -i "bin\Debug\net10.0\output" -t "Fixed abnormal weapon damage"
+DCCMTool steam upload -i "bin\Debug\net11.0\output" -t "Fixed abnormal weapon damage"
 
 # Specify a custom preview image
-DCCMTool steam upload -i "bin\Debug\net10.0\output" -p "Assets\my-preview.png"
+DCCMTool steam upload -i "bin\Debug\net11.0\output" -p "Assets\my-preview.png"
 ```
 
 When `-t` is not specified, the update text defaults to `Update to v{version}`.
@@ -125,7 +125,7 @@ When `-t` is not specified, the update text defaults to `Update to v{version}`.
 
 On first upload, DCCMTool's behavior:
 
-1. Searches the Workshop for an entry matching the `dccm_modname` tag; if none is found, it's determined to be a first-time publish
+1. Searches your published Workshop items for an entry matching the `dccm_modname` tag; if none is found, it's determined to be a first-time publish
 2. Automatically creates a new Workshop entry with the title format `[DCCM] ModName`
 3. Sets the entry visibility to **Public**
 4. Adds a `dccm_modname` key-value tag to the entry for subsequent update matching
@@ -267,7 +267,7 @@ For players who don't use Steam, you can package the mod output as a zip file fo
 
 ### Packaging Steps
 
-The mod build output is located at `bin\Debug\net10.0\output` with the following directory structure:
+The mod build output is located at `bin\Debug\net11.0\output` with the following directory structure:
 
 ```text
 SimpleMod/
@@ -281,7 +281,7 @@ Package this directory as a zip:
 
 ```bash
 # Windows PowerShell
-Compress-Archive -Path "bin\Debug\net10.0\output\*" -DestinationPath "MyMod-v1.0.0.zip"
+Compress-Archive -Path "bin\Debug\net11.0\output\*" -DestinationPath "MyMod-v1.0.0.zip"
 ```
 
 ### Installation Instructions

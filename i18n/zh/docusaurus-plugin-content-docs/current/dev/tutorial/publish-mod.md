@@ -8,7 +8,7 @@ sidebar_position: 4
 
 :::warning
 
-- 已完成 [第一个 Mod](/docs/dev/tutorial/first-mod) 教程，拥有可构建的 Mod 项目
+- 已完成 [第一个 Mod](./first-mod.md) 教程，拥有可构建的 Mod 项目
 - 已安装 **Steam 客户端**，并以拥有 Dead Cells 的账号登录
 - Steam 客户端需保持运行状态，DCCMTool 通过本地 Steam API 与创意工坊通信
 
@@ -16,7 +16,7 @@ sidebar_position: 4
 
 ## 准备发布
 
-构建完成后，Mod 产物位于项目的 `bin\Debug\net10.0\output` 目录（参见[构建与测试](/docs/dev/tutorial/first-mod#构建与测试)）。在发布前，需要确保 `modinfo.json` 中的元信息完整。
+构建完成后，Mod 产物位于项目的 `bin\Debug\net11.0\output` 目录（参见[构建与测试](./first-mod.md#构建与测试)）。在发布前，需要确保 `modinfo.json` 中的元信息完整。
 
 ### modinfo.json 关键字段
 
@@ -110,13 +110,13 @@ DCCMTool steam upload -i <Mod目录> [-t 更新说明] [-p 预览图路径]
 
 ```bash
 # 上传到创意工坊（使用默认更新文本和自动检测的预览图）
-DCCMTool steam upload -i "bin\Debug\net10.0\output"
+DCCMTool steam upload -i "bin\Debug\net11.0\output"
 
 # 上传并附带更新说明
-DCCMTool steam upload -i "bin\Debug\net10.0\output" -t "修复了武器伤害异常的问题"
+DCCMTool steam upload -i "bin\Debug\net11.0\output" -t "修复了武器伤害异常的问题"
 
 # 指定自定义预览图
-DCCMTool steam upload -i "bin\Debug\net10.0\output" -p "Assets\my-preview.png"
+DCCMTool steam upload -i "bin\Debug\net11.0\output" -p "Assets\my-preview.png"
 ```
 
 不指定 `-t` 时，更新文本默认为 `Update to v{version}`。
@@ -125,7 +125,7 @@ DCCMTool steam upload -i "bin\Debug\net10.0\output" -p "Assets\my-preview.png"
 
 首次上传时，DCCMTool 的行为：
 
-1. 在创意工坊中搜索 `dccm_modname` 标签匹配的条目，未找到则判定为首次发布
+1. 在你已发布的创意工坊项目中搜索 `dccm_modname` 标签匹配的条目，未找到则判定为首次发布
 2. 自动创建新的 Workshop 条目，标题格式为 `[DCCM] ModName`
 3. 设置条目可见性为**公开**
 4. 为条目添加 `dccm_modname` 键值标签，用于后续更新匹配
@@ -199,7 +199,7 @@ DCCM 不强制版本格式，但推荐遵循语义化版本规范。
 </ItemGroup>
 ```
 
-而 `LibraryMod` 仅发布在创意工坊上，`dotnet build` 会因找不到依赖而失败。此时使用 `steam mount` 将其挂载到本地即可正常编译。参见[模组依赖](/docs/dev/mdk#模组依赖)。
+而 `LibraryMod` 仅发布在创意工坊上，`dotnet build` 会因找不到依赖而失败。此时使用 `steam mount` 将其挂载到本地即可正常编译。参见[模组依赖](../mdk.md#模组依赖)。
 
 :::
 
@@ -267,7 +267,7 @@ DCCMTool steam mount -n LibraryMod -a false
 
 ### 打包步骤
 
-Mod 构建产物位于 `bin\Debug\net10.0\output`，目录结构如下：
+Mod 构建产物位于 `bin\Debug\net11.0\output`，目录结构如下：
 
 ```text
 SimpleMod/
@@ -281,7 +281,7 @@ SimpleMod/
 
 ```bash
 # Windows PowerShell
-Compress-Archive -Path "bin\Debug\net10.0\output\*" -DestinationPath "MyMod-v1.0.0.zip"
+Compress-Archive -Path "bin\Debug\net11.0\output\*" -DestinationPath "MyMod-v1.0.0.zip"
 ```
 
 ### 安装说明

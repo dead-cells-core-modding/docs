@@ -8,7 +8,7 @@ sidebar_position: 3
 
 :::info
 本教程代码来自 **Frostbite** 的 SampleWeapon 示例项目。
-加入 [Discord 服务器](https://discord.gg/Z7zzVafaP3) 获取更多帮助。
+加入 [Discord 服务器](https://discord.gg/7vp38qsYc4) 获取更多帮助。
 :::
 
 ## 前置要求
@@ -26,7 +26,7 @@ sidebar_position: 3
 按照前一篇教程的方式，创建名为 **SampleWeapon** 的类库项目，并添加 MDK 包引用：
 
 ```bash
-dotnet new classlib -n SampleWeapon -f net10.0
+dotnet new classlib -n SampleWeapon -f net11.0
 cd SampleWeapon
 dotnet add package DeadCellsCoreModding.MDK
 ```
@@ -45,7 +45,7 @@ MDK 提供了自动生成 diff CDB 的功能。在 `SampleWeapon.csproj` 中添�
 
 ```xml
 <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -442,7 +442,7 @@ namespace SampleSimple
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -472,7 +472,7 @@ namespace SampleSimple
 dotnet build
 ```
 
-构建成功后，在 `bin\Debug\net10.0\output` 目录下会生成 Mod 文件以及自动打包好的 `res.pak`。
+构建成功后，在 `bin\Debug\net11.0\output` 目录下会生成 Mod 文件以及自动打包好的 `res.pak`。
 
 通过 `DeadCellsModding.exe` 启动游戏，进入关卡后按下反斜杠键，角色脚下会生成一把 `OtherDashSword`。拾取后每帧自动获得 10 细胞。
 

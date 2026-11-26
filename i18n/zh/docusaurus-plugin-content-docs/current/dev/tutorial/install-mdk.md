@@ -8,15 +8,15 @@ sidebar_position: 1
 
 :::tip
 
-加入 [Discord 服务器](https://discord.gg/Z7zzVafaP3) 获取更多帮助。
+加入 [Discord 服务器](https://discord.gg/7vp38qsYc4) 获取更多帮助。
 
 :::
 
 ## 先决条件
 
-- **.NET 10 SDK** ([下载地址](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0))
+- **.NET 11 SDK** ([下载地址](https://dotnet.microsoft.com/zh-cn/download/dotnet/11.0))
   - （可选） Visual Studio 2022
-- [DCCM 核心文件](/docs/tutorial/install-core)
+- [DCCM 核心文件](../../tutorial/install-core.md)
 
 ## 安装步骤
 

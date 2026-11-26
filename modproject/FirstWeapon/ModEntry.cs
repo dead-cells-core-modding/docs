@@ -8,7 +8,7 @@ using ModCore.Events.Interfaces.Game;
 using ModCore.Events.Interfaces.Game.Hero;
 using ModCore.Mods;
 using ModCore.Modules;
-using ModCore.Utitities;
+using ModCore.Utilities;
 
 namespace FirstWeaponMod
 {
@@ -51,9 +51,9 @@ namespace FirstWeaponMod
         {
             var res = Info.ModRoot!.GetFilePath("res.pak"); //获取 Mod 根目录 下的 res.pak 文件的绝对路径
             FsPak.Instance.FileSystem.loadPak(res.AsHaxeString()); //加载 res.pak
-            var json = CDBManager.Class.instance.getAlteredCDB(); //获取合并后的 CDB Json
+            var json = CDBManager.Instance.GetAlteredCDB(); //获取合并后的 CDB Json
             Data.Class.loadJson( //加载合并后的 CDB Json
-               json,
+               json.AsHaxeString(),
                default);
         }
 

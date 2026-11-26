@@ -21,7 +21,7 @@ modinfo.json 生成和自动安装。通过 NuGet 包 `DeadCellsCoreModding.MDK`
 <游戏目录>/coremod/core/mdk/install-linux.sh
 ```
 
-脚本通过 DCCMTool 注册 `DCCM_MDK_ROOT` 环境变量，使 MSBuild 能定位 MDK 构建文件。
+脚本会运行 DCCMTool 的 `install-mdk` 命令，注册 `DCCM_MDK_ROOT`、`DEAD_CELLS_GAME_PATH` 与 `DCCM_MDK_BIN_ROOT` 环境变量，并将 MDK 的 `packages/` 目录添加为 `DeadCoreModdingMDK` NuGet 源。
 
 ## 项目引用
 
@@ -40,8 +40,8 @@ MDK 包自动导入 `.props` 和 `.targets`，提供所有构建属性与目标�
 | 属性 | 必须 | 说明 |
 | ------ | :--: | ------ |
 | `ModName` | 否 | 模组名称，默认取 `$(AssemblyName)`。必须与 `modinfo.json` 的 `name` 一致 |
-| `ModType` | 是 | 模组类型：`mod`（普通模组）或 `library`（库） |
-| `ModMain` | 是 | 模组入口类的完全限定名，如 `MyMod.MainClass` |
+| `ModType` | 是 | 模组类型：`mod`（普通模组）、`library`（库）、`plugin`（核心插件）或 `default` |
+| `ModMain` | 条件 | 模组入口类的完全限定名，如 `MyMod.MainClass`。`mod` 必填；`library`/`plugin` 不需要 |
 | `AutoInstallMod` | 否 | 设为 `true` 时，构建后自动复制到 `coremod/mods/` |
 | `GenerateSinglePakFile` | 否 | 设为 `true` 时，将所有 `PackAssets` 合并为单个 `res.pak` |
 | `GenerateDiffCDB` | 否 | 设为 `true` 时生成 CastleDB 差异补丁，**需同时指定 `GameVersion`** |
@@ -50,6 +50,11 @@ MDK 包自动导入 `.props` 和 `.targets`，提供所有构建属性与目标�
 | `Preview` | 否 | 模组预览图路径（`.png`/`.jpg`/`.gif`），默认取项目目录下的 `preview.png` |
 | `ModTag` | 否 | 模组标签，写入 `modinfo.json` 的 `tags` 字段 |
 | `RepositoryUrl` | 否 | 模组仓库地址，写入 `modinfo.json` |
+| `GenerateModInfo` | 否 | 设为 `true`（默认）时，根据 MSBuild 属性生成/合并 `modinfo.json` |
+| `MDKOutputPath` | 否 | 输出根目录，默认 `$(OutputPath)output`；模组放在 `$(MDKOutputPath)/$(ModName)/` 下 |
+| `OutputPakName` | 否 | 合并后 pak 的文件名，默认 `res.pak` |
+| `CdbFile` | 否 | 模组 CastleDB 路径，默认项目目录下的 `data.cdb` |
+| `TemplateCdbFile` | 否 | 覆盖模板 CDB 路径（否则为 `databases/v$(GameVersion)/data.cdb`） |
 | `ModDependency` | 否 | 依赖的其他模组名称（`<ModDependency Include="ModName" />`） |
 
 ## 资源打包项
@@ -80,8 +85,8 @@ MDK 包自动导入 `.props` 和 `.targets`，提供所有构建属性与目标�
 3. **打包资源** — DCCMTool 将 `PackAssets` 打包为中间 `.pak`
 4. **生成 CDB 补丁**（`GenerateDiffCDB=true` 时）— DCCMTool 对比
    `data.cdb` 与 `v$(GameVersion)` 模板，生成差异 `.pak`
-5. **合并 PAK** — 合并中间 `.pak` 为 `res.pak`
-6. **输出** — 复制 DLL、`res.pak`、预览图到 `$(OutputPath)/output/$(ModName)/`
+5. **合并 PAK** — 合并中间 `.pak` 为 `$(OutputPakName)`（默认 `res.pak`）
+6. **输出** — 复制 DLL、pak、预览图到 `$(MDKOutputPath)/$(ModName)/`
 7. **自动安装**（`AutoInstallMod=true` 时）— 复制到 `coremod/mods/$(ModName)/`
 
 ## DCCMTool
@@ -97,9 +102,11 @@ MDK 的核心命令行工具，提供以下与模组开发相关的命令：
 | `cdb diff -i mod.cdb -t 模板.cdb -o 差异.pak` | 生成 CastleDB 差异 |
 | `steam upload` | 上传到 Steam 创意工坊 |
 | `steam mount` | 挂载创意工坊模组到本地 |
-| `atlas unpack -i 图集文件` | 解包图集 |
+| `atlas unpack -i 图集文件 -o 输出目录` | 解包图集 |
 | `atlas colorswap decode/encode` | 解码/编码调色板 |
-| `tmx collapse/expand` | TMX 二进制/XML 互转 |
+| `tmx collapse -x 输入.tmx -b 输出.bin` | TMX XML 转二进制 |
+| `tmx expand -b 输入.bin -x 输出.tmx` | 二进制 TMX 转 XML |
+| `generate-game-persudo -i hlboot.dat -o 输出目录` | 手动生成 GamePseudocode 程序集 |
 
 直接调用（在已安装 MDK 的环境中）：
 
@@ -170,13 +177,15 @@ dotnet "$env:DCCM_MDK_ROOT/tools/DCCMTool.dll" pak unpack -i res.pak -o ./unpack
     "version": "1.0.0",
     "type": "mod",
     "main": "MyMod.MainClass",
-    "dependencies": ["LibraryMod", "SomeLib"]
+    "assemblies": ["MyMod.dll"],
+    "dependencies": ["LibraryMod", "SomeLib"],
+    "dccmversion": "35.16.1"
 }
 ```
 
 ## 库模组
 
-依赖模组应为 `library` 类型（`<ModType>library</ModType>`）。库模组不包含 `ModMain`，仅提供可复用的类型与方法。
+依赖模组应为 `library` 类型（`<ModType>library</ModType>`）。库模组（以及 `plugin` 模组）不会在 `modinfo.json` 中生成 `main` 字段，仅提供可复用的类型与方法。
 
 ## 常见问题 — 依赖
 

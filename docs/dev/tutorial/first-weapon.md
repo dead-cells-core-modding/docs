@@ -8,7 +8,7 @@ This tutorial will walk you through creating a custom weapon, covering the full 
 
 :::info
 The code in this tutorial comes from **Frostbite**'s SampleWeapon example project.
-Join the [Discord server](https://discord.gg/Z7zzVafaP3) for more help.
+Join the [Discord server](https://discord.gg/7vp38qsYc4) for more help.
 :::
 
 ## Prerequisites
@@ -26,7 +26,7 @@ If you haven't completed it yet, go back to the previous tutorial first.
 Following the same approach as the previous tutorial, create a class library project named **SampleWeapon** and add the MDK package reference:
 
 ```bash
-dotnet new classlib -n SampleWeapon -f net10.0
+dotnet new classlib -n SampleWeapon -f net11.0
 cd SampleWeapon
 dotnet add package DeadCellsCoreModding.MDK
 ```
@@ -45,7 +45,7 @@ MDK provides an automatic diff CDB generation feature. Add the following to `Sam
 
 ```xml
 <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -442,7 +442,7 @@ namespace SampleSimple
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -472,7 +472,7 @@ namespace SampleSimple
 dotnet build
 ```
 
-After a successful build, the mod files and the auto-packaged `res.pak` will be generated in the `bin\Debug\net10.0\output` directory.
+After a successful build, the mod files and the auto-packaged `res.pak` will be generated in the `bin\Debug\net11.0\output` directory.
 
 Launch the game via `DeadCellsModding.exe`, enter a level, and press the backslash key. An `OtherDashSword` will spawn at the character's feet. Upon picking it up, you'll automatically gain 10 cells per frame.
 

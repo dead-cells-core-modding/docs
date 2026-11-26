@@ -13,7 +13,7 @@ Although mods are written in **C#**, Dead Cells itself is built with **Haxe** an
 This tutorial assumes you already have:
 
 - Basic C# programming knowledge
-- [MDK installed](/docs/dev/tutorial/install-mdk)
+- [MDK installed](./install-mdk.md)
 
 :::
 
@@ -26,8 +26,8 @@ The complete source code for this tutorial is available at [SampleSimple](https:
 Open a terminal and run the following commands:
 
 ```bash
-# Create a net10.0 class library project
-dotnet new classlib -n SimpleMod -f net10.0
+# Create a net11.0 class library project
+dotnet new classlib -n SimpleMod -f net11.0
 
 # Enter the project directory
 cd SimpleMod
@@ -45,7 +45,7 @@ Edit `SimpleMod.csproj` and add the following MSBuild properties inside `<Proper
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -84,16 +84,20 @@ MDK **automatically generates** `modinfo.json` during the build based on the csp
   "name": "Simple",
   "version": "1.0.0",
   "type": "mod",
+  "main": "SampleSimple.SimpleMod",
+  "assemblies": ["SampleSimple.dll"],
   "dependencies": [],
-  "dccmversion": "1.0.0"
+  "dccmversion": "35.16.1"
 }
 ```
 
 | Field | Meaning |
 | ------ | ------ |
 | `name` | Mod name; must match the output folder name |
-| `version` | Mod version number |
+| `version` | Mod version number (from the `<Version>` property) |
 | `type` | Type, corresponding to `ModType` |
+| `main` | Fully qualified entry-point class name, corresponding to `ModMain` |
+| `assemblies` | DLL file names loaded from the mod directory |
 | `dependencies` | List of other mod names this mod depends on |
 | `dccmversion` | DCCM version used during the build |
 
@@ -262,7 +266,7 @@ namespace SampleSimple
 dotnet build
 ```
 
-After a successful build, the output is located at `bin\Debug\net10.0\output`. If `AutoInstallMod` is enabled, the mod is automatically installed to the game's mod directory.
+After a successful build, the output is located at `bin\Debug\net11.0\output`. If `AutoInstallMod` is enabled, the mod is automatically installed to the game's mod directory.
 
 Launch the game via `DeadCellsModding.exe` and check the logs to confirm the mod loaded:
 
@@ -275,8 +279,8 @@ Launch the game via `DeadCellsModding.exe` and check the logs to confirm the mod
 
 ### Build Fails
 
-- Make sure [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) is installed
-- Make sure the MDK NuGet source is configured (see [Installing MDK](/docs/dev/tutorial/install-mdk))
+- Make sure [.NET 11 SDK](https://dotnet.microsoft.com/download/dotnet/11.0) is installed
+- Make sure the MDK NuGet source is configured (see [Installing MDK](./install-mdk.md))
 - Try cleaning and rebuilding:
 
 ```bash

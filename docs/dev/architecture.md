@@ -14,8 +14,8 @@ flowchart TD
     B --> C[Startup.StartGame]
     C --> D[Core.Initialize]
     D --> E[Load Preload CoreModules]
-    D --> F[Broadcast IOnCoreModuleInitializing]
-    E --> G[Load hlboot.dat bytecode]
+    E --> F[Broadcast IOnCoreModuleInitializing]
+    F --> G[Load hlboot.dat bytecode]
     G --> H[Native.InitializeGame]
     H --> I[Hashlink VM starts]
     I --> J[Broadcast lifecycle events]
@@ -25,12 +25,12 @@ The entry point is `DeadCellsModding.exe`, a NativeAOT-compiled launcher. It loc
 
 `Core.Initialize()` is the core of framework initialization and performs the following steps in order:
 
-1. Registers assembly resolution hooks (`AssemblyResolve`, `TypeResolve`), allowing the framework to dynamically load assemblies from the `coremod/plugins/` and `coremod/mods/` directories.
+1. Registers an assembly resolution hook (`AssemblyResolve`), allowing the framework to resolve missing assemblies from the framework directory and `coremod/plugins/`. Mods are loaded separately by `ModLoader` from `coremod/mods/`.
 2. Initializes the native runtime (`InitializeNative`), recording runtime version and platform information.
 3. Loads all core modules marked with `CoreModuleKind.Preload`, which set up essential infrastructure (e.g. storage system, hook manager) before the game starts.
 4. Broadcasts the `IOnCoreModuleInitializing` event, notifying all registered receivers that core modules are ready.
 
-After that, the framework loads `hlboot.dat` (precompiled game bootstrap bytecode) and calls `Native.InitializeGame()` to start the Hashlink VM. Once the game window is created, the framework broadcasts lifecycle events in sequence: `IOnBeforeGameInit`, `IOnGameInit`, and so on.
+After that, the framework loads `hlboot.dat` (precompiled game bootstrap bytecode) and calls `Native.InitializeGame()` to start the Hashlink VM. `IOnBeforeGameInit` is broadcast when the Haxe main entry starts, `IOnGameInit` after the game window is created, and the remaining lifecycle events follow.
 
 ## Dual-Layer Module System
 
@@ -138,17 +138,25 @@ The core directories of the DCCM repository are as follows:
 ```text
 DeadCellsCoreModding/
 ├── sources/          # Main C# solution
-│   ├── ModCore/              # Core mod framework
-│   ├── ModCore.Common/       # Shared utilities (EventSystem, etc.)
-│   ├── ModCore.Game/         # Game integration layer
-│   ├── ModCore.Native/       # Native interop (P/Invoke, TCC JIT)
-│   ├── DCCMShell/            # Bootstrap bridge DLL
-│   ├── DeadCellsModding/     # NativeAOT launcher
-│   └── HashlinkSharp/        # C# wrapper for Hashlink VM
-├── mdk/              # Mod development toolkit (MSBuild targets, proxy assemblies)
-├── sample/           # Sample mods (SimpleMod, SampleWeapon, etc.)
+│   ├── ModCore/                    # Core mod framework
+│   ├── ModCore.Common/             # Shared utilities (EventSystem, FolderInfo, etc.)
+│   ├── ModCore.Native/             # Native interop (P/Invoke, TCC JIT)
+│   ├── ModCore.ModLoader.Default/  # Default mod loader plugin
+│   ├── HaxeProxy/                  # Haxe proxy runtime and generated proxy types
+│   ├── HashlinkSharp/              # C# wrapper for Hashlink VM
+│   ├── HashlinkNET.Compiler/       # Haxe bytecode -> .NET compiler (GameProxy)
+│   ├── HashlinkNET.Bytecode/       # Hashlink bytecode reader
+│   ├── DCCMShell/                  # Bootstrap bridge DLL
+│   ├── DeadCellsModding/           # NativeAOT launcher
+│   ├── GOGStartShell/              # GOG launcher shell
+│   ├── SteamStartShell/            # Steam Workshop bootstrap launcher
+│   └── SteamLauncher/              # Steam Workshop management and game launcher
+├── mdk/              # Mod development toolkit (MSBuild targets, DCCMTool)
+├── sample/           # Sample mods (SampleSimple, SampleWeapon, etc.)
 ├── test/             # Integration tests (xUnit v3, requires Hashlink VM)
+├── tools/            # Proxy/documentation generator tools
 ├── hlboots/          # Precompiled game bootstrap bytecode
+├── workshop-publish/ # Packaged Workshop distribution
 └── build/            # NUKE build automation
 ```
 
@@ -160,4 +168,7 @@ Internal structure of `sources/ModCore/`:
 | `Modules/` | Core module implementations (Game, ModLoader, HashlinkHooks, etc.) |
 | `Hooks/` | Hashlink function hook manager |
 | `Mods/` | ModBase, ModInfo, and other mod infrastructure |
+| `Plugins/` | PluginBase, PluginAttribute |
+| `Serialization/` | Hxbit serialization bridge |
 | `Storage/` | Config, SaveData, and other persistence utilities |
+| `Utilities/` | String, array, color, and resource helpers |

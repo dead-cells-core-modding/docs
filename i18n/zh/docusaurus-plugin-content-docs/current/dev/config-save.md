@@ -67,28 +67,38 @@ DCCM 的 `Config<T>` 处理的是模组的 JSON 配置文件。如果你使用�
 
 ## SaveData\<T\>
 
-`SaveData<T>` 将数据绑定到游戏存档。读取存档时自动恢复数据，保存游戏时自动写入。数据以 JSON 格式嵌入存档文件。
+`SaveData<T>` 将数据绑定到游戏存档。读取存档时自动恢复数据，保存游戏时自动写入。数据以 JSON 格式保存在游戏存档旁的 `.modded.json` 伴生文件中。
 
 ### SaveData 声明
 
-同样通过 `Value` 属性操作：
+声明一个静态 `SaveData<T>` 实例（名称应唯一），再通过 `Value` 属性操作：
 
 ```csharp
+using ModCore.Storage;
+
+public class MySave
+{
+    public static SaveData<MySave> Save { get; } = new("MyMod");
+
+    public int Coins { get; set; }
+    public List<string> UnlockedItems { get; set; } = [];
+}
+
 // 修改数据
-MyMod.Save.Value.Coins += 100;
-MyMod.Save.Value.UnlockedItems.Add("SomeWeapon");
+MySave.Save.Value.Coins += 100;
+MySave.Save.Value.UnlockedItems.Add("SomeWeapon");
 
 // 读取数据
-int coins = MyMod.Save.Value.Coins;
+int coins = MySave.Save.Value.Coins;
 ```
 
-数据会在存档保存时自动写入，存档加载时自动恢复。开发者只需操作 `Value`，无需关心持久化细节。
+数据会在存档加载时自动恢复，并在游戏保存后自动写入；伴生文件也会随存档一起复制/删除。开发者只需操作 `Value`，无需关心持久化细节。
 
 ### 与 Config 的区别
 
 | | Config\<T\> | SaveData\<T\> |
 | --- | --- | --- |
-| 存储位置 | `config/{name}.json` | 嵌入游戏存档文件 |
+| 存储位置 | `config/{name}.json` | 游戏存档旁的 `*.modded.json` 伴生文件 |
 | 生命周期 | 模组级别，跨存档共享 | 存档级别，随存档独立 |
 | 适用场景 | 模组设置（按键、开关） | 随存档变化的进度数据 |
 | T 约束 | `new()` | `class, new()` |

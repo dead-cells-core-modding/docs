@@ -27,7 +27,7 @@ As the framework was released only recently, only a handful of individuals are c
 
 ## 一.Preparatory Work
 ### 1. Create the `dccm` module
-[Click to view the tutorial](i18n/zh/docusaurus-plugin-content-docs/current/dev/tutorial/first-mod.md)
+[Click to view the tutorial](../first-mod.md)
 ```csharp
 using ModCore.Events.Interfaces.Game;
 using ModCore.Mods;
@@ -117,11 +117,11 @@ is your project file.
 ![](./level/strct-2.png)
 
 
-```bash
+```xml
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+  <PropertyGroup>
 
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ModType>mod</ModType>
@@ -131,10 +131,9 @@ is your project file.
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.6.2" />
-    <PackageReference Include="DeadCellsCoreModding.MDK" Version="1.0.1" />
-  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DeadCellsCoreModding.MDK" Version="1.0.1" />
+  </ItemGroup>
 
   <PropertyGroup>
     <GenerateDiffCDB>true</GenerateDiffCDB>
@@ -161,7 +160,7 @@ using dc.tool.mod;
 using ModCore.Events.Interfaces.Game;
 using ModCore.Mods;
 using ModCore.Modules;
-using ModCore.Utitities;
+using ModCore.Utilities;
 
 namespace Outside_Clock
 {
@@ -186,12 +185,10 @@ namespace Outside_Clock
         {
             var res = Info.ModRoot!.GetFilePath("Kaguya.pak");
             FsPak.Instance.FileSystem.loadPak(res.AsHaxeString());
-            var json = CDBManager.Class.instance.getAlteredCDB();
-            dc.Data.Class.loadJson(
-               json,
-               default);
-        }
-    }
+            var json = CDBManager.Instance.GetAlteredCDB();
+            dc.Data.Class.loadJson(json.AsHaxeString(), default);
+        }
+    }
 }
 ```
 
@@ -201,11 +198,9 @@ void IOnGameEndInit.OnGameEndInit()
         {
             var res = Info.ModRoot!.GetFilePath("Kaguya.pak");
             FsPak.Instance.FileSystem.loadPak(res.AsHaxeString());
-            var json = CDBManager.Class.instance.getAlteredCDB();
-            dc.Data.Class.loadJson(
-               json,
-               default);
-        }
+            var json = CDBManager.Instance.GetAlteredCDB();
+            dc.Data.Class.loadJson(json.AsHaxeString(), default);
+        }
 ```
 Thus your `pak` is read.
 :::
@@ -222,7 +217,7 @@ function buildMainRooms() {
         .chain(Struct.createExit("PrisonRoof"));
 }
 ```
-[Step-by-step guide]([死亡细胞模组制作教程 第四部分（Script模组） - 哔哩哔哩](https://www.bilibili.com/opus/684984246732849152))
+[Step-by-step guide](https://www.bilibili.com/opus/684984246732849152)
 ### The preparatory work is now complete.
 
 ## 二. Constructing the Level Structure

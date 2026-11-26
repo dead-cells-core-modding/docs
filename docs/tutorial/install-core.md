@@ -16,8 +16,8 @@ Join the [Discord server](https://discord.gg/7vp38qsYc4) for more help.
 
 ## Prerequisites
 
-- **.NET 10 Runtime** ([Download Link](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0))
-  - If you plan to develop **Mods** for **DCCM**, install the **.NET 10 SDK**.
+- **.NET 11 Runtime** ([Download Link](https://dotnet.microsoft.com/zh-cn/download/dotnet/11.0))
+  - If you plan to develop **Mods** for **DCCM**, install the **.NET 11 SDK**.
 - **Microsoft Visual C++ Redistributable Packages (2015-2022)** ([Download Link](https://aka.ms/vs/17/release/vc_redist.x64.exe))
 
 ## Installation

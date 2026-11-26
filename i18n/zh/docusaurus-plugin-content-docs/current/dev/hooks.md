@@ -91,7 +91,7 @@ public override void Initialize()
 }
 ```
 
-这里 `CreateHook` 的第三个参数 `enableByDefault` 默认为 `true`，所以 `.Enable()` 可以省略，但显式调用更清晰。
+这里 `CreateHook` 的 `enableByDefault` 参数默认为 `true`，所以 `.Enable()` 可以省略，但显式调用更清晰。
 
 ### 示例：修改前后逻辑
 
