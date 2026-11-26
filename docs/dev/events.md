@@ -77,6 +77,8 @@ The `[Event]` attribute supports one optional parameter:
 | --- | --- | --- |
 | `IOnAfterPauseMenuBuild` | After pause menu is built; parameter `Pause pause` | `Game/Menu/IOnAfterPauseMenuBuild.cs` |
 
+See [Custom Menu](./custom-menu.md) for adding a mod settings page or a pause-menu button.
+
 ### VM
 
 | Interface Name | Trigger Timing | Source File |

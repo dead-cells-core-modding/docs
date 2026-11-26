@@ -77,6 +77,8 @@ DCCM 通过 `EventSystem` 实现广播式事件机制。每个事件定义为一
 | --- | --- | --- |
 | `IOnAfterPauseMenuBuild` | 暂停菜单构建完成后，参数 `Pause pause` | `Game/Menu/IOnAfterPauseMenuBuild.cs` |
 
+参见[自定义菜单](./custom-menu.md)了解如何添加模组设置页面或暂停菜单按钮。
+
 ### 虚拟机（VM）
 
 | 接口名 | 触发时机 | 所在文件 |
