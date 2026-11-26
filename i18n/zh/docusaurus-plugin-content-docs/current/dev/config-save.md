@@ -159,3 +159,9 @@ public class OtherDashSword : DashSword, IHxbitSerializable<object>
 | `SaveData<T>.Value` | 读取/写入存档数据 |
 | `IHxbitSerializable<TData>.GetData()` | Hxbit 序列化时提取数据 |
 | `IHxbitSerializable<TData>.SetData(data)` | Hxbit 反序列化时恢复状态 |
+
+:::tip
+
+关于 DCCM/模组目录定位与生成数据缓存，请参阅[目录与缓存](./folders-cache.md)。
+
+:::

@@ -161,3 +161,9 @@ public class OtherDashSword : DashSword, IHxbitSerializable<object>
 | `SaveData<T>.Value` | Read/write save data |
 | `IHxbitSerializable<TData>.GetData()` | Extract data during Hxbit serialization |
 | `IHxbitSerializable<TData>.SetData(data)` | Restore state during Hxbit deserialization |
+
+:::tip
+
+For locating DCCM/mod directories and caching generated data, see [Folders & Cache](./folders-cache.md).
+
+:::
