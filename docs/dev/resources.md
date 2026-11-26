@@ -75,6 +75,12 @@ void IOnGameEndInit.OnGameEndInit()
 | `Res.Class.load(path)` | Reads data from a loaded resource by path |
 | `.AsHaxeString()` | Converts a C# string to a Haxe string (extension method in `ModCore.Utilities`) |
 
+:::tip
+
+For resource helpers such as `Res.TryLoadResEx`, see [Utilities](./utilities.md).
+
+:::
+
 ## FAQ — Resources
 
 **`Res.Class.load()` returns `null`?**

@@ -75,6 +75,12 @@ void IOnGameEndInit.OnGameEndInit()
 | `Res.Class.load(path)` | 按路径从已加载的资源中读取数据 |
 | `.AsHaxeString()` | 将 C# 字符串转换为 Haxe 字符串（扩展方法，位于 `ModCore.Utilities`） |
 
+:::tip
+
+关于 `Res.TryLoadResEx` 等资源辅助方法，参见[实用工具](./utilities.md)。
+
+:::
+
 ## 常见问题 — 资源
 
 **`Res.Class.load()` 返回 `null`？**
