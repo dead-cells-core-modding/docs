@@ -62,3 +62,9 @@ sidebar_position: 100
   - 如果不存在，请确认操作是否正确。
 - 使用你喜欢的 **.NET 反编译器** 打开 `GamePseudocode.dll`。
   - 推荐使用 [DnSpy](https://github.com/dnSpyEx/dnSpy)。
+
+:::tip
+
+如果希望游戏实际执行生成的 C# 伪代码，从而能在调试器中设置断点并单步跟踪，请参阅[使用 UseCSharpVersionCode 调试游戏代码](./advance/use-csharp-version-code.md)。
+
+:::
