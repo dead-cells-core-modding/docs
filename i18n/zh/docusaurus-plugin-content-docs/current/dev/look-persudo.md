@@ -65,6 +65,6 @@ sidebar_position: 100
 
 :::tip
 
-如果希望游戏实际执行生成的 C# 伪代码，从而能在调试器中设置断点并单步跟踪，请参阅[使用 UseCSharpVersionCode 调试游戏代码](./advance/use-csharp-version-code.md)。
+如果希望游戏实际执行生成的 C# 伪代码，从而能在调试器中设置断点并单步跟踪，请参阅[使用 UseCSharpVersionCode 调试游戏代码](./use-csharp-version-code.md)。
 
 :::

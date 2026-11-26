@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 101
 ---
 
 # 使用 UseCSharpVersionCode 调试游戏代码
@@ -141,7 +141,7 @@ namespace DebugHelper
 - 将调试器附加到游戏进程。
 - 在 Visual Studio 中关闭 **仅我的代码**（`工具 > 选项 > 调试 > 常规`），以便单步进入生成的/框架代码。
 - 可以开启 **模块加载时禁用 JIT 优化**，以获得更准确的单步体验。
-- 在已烘焙的 `GameProxy` 方法中设置断点。下断点前可先反编译 `coremod/cache/GamePseudocode.dll` 了解代码（参见[查看游戏代码](../look-persudo.md)）。
+- 在已烘焙的 `GameProxy` 方法中设置断点。下断点前可先反编译 `coremod/cache/GamePseudocode.dll` 了解代码（参见[查看游戏代码](./look-persudo.md)）。
 - 如果某个方法因 `[HashlinkShouldUseNative]` 被跳过，它的原生实现仍会运行；可以使用 crashlink/hlbc 查看。
 
 ## 常见问题

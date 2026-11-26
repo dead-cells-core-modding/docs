@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 101
 ---
 
 # Debugging Game Code with UseCSharpVersionCode
@@ -141,7 +141,7 @@ The names above are game-proxy types, so add the matching `using` directives or 
 - Attach your debugger to the game process.
 - In Visual Studio, disable **Just My Code** (`Tools > Options > Debugging > General`) so you can step into generated/framework code.
 - Consider enabling **Suppress JIT optimization on module load** for more accurate stepping.
-- Set breakpoints in the baked `GameProxy` methods. To understand the code before setting breakpoints, decompile `coremod/cache/GamePseudocode.dll` (see [Viewing Game Code](../look-persudo.md)).
+- Set breakpoints in the baked `GameProxy` methods. To understand the code before setting breakpoints, decompile `coremod/cache/GamePseudocode.dll` (see [Viewing Game Code](./look-persudo.md)).
 - If a method is skipped because of `[HashlinkShouldUseNative]`, its native implementation still runs; use crashlink/hlbc to inspect it.
 
 ## FAQ
